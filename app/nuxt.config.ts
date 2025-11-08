@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     'nuxt-maplibre',
-    '@sidebase/nuxt-auth'
+    '@sidebase/nuxt-auth',
+    'nitro-cloudflare-dev'
   ],
   shadcn: {
     /**
