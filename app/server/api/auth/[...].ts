@@ -5,6 +5,7 @@ const StravaProvider = (StravaProvider_Import as any).default ?? StravaProvider_
 
 const stravaClientId = process.env.AUTH_STRAVA_CLIENT_ID
 const stravaClientSecret = process.env.AUTH_STRAVA_CLIENT_SECRET
+const authOrigin = process.env.AUTH_ORIGIN
 
 if (!stravaClientId || !stravaClientSecret) {
   throw new Error('Strava client ID or secret is not set in .env')
@@ -20,7 +21,8 @@ export default NuxtAuthHandler({
       clientSecret: stravaClientSecret,
       authorization: {
         params: {scope: 'read,activity:read_all'}
-      }
+      },
+      origin: authOrigin,
     })
   ],
 
