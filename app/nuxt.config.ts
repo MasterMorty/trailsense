@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt', 'nuxt-maplibre'],
+  modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt', 'nuxt-maplibre', 'nitro-cloudflare-dev'],
   shadcn: {
     /**
      * Prefix for all the imported component
