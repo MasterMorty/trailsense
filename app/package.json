@@ -40,5 +40,8 @@
     "drizzle-kit": "^0.31.6",
     "nitro-cloudflare-dev": "^0.2.2",
     "wrangler": "^4.46.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
   }
 }
