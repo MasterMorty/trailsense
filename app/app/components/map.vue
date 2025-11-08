@@ -1,43 +1,59 @@
 <template>
-  <MglMap
-      :map-style="style"
-      :center="center"
-      :zoom="zoom"
-      @map:load="onMapLoad"
-  >
-    <!-- <MglNavigationControl /> -->
-  </MglMap>
+  <div ref="mapContainer" style="width: 100%; height: 100%; min-height: 500px;"></div>
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
 import type { Map } from 'maplibre-gl'
-import style from '~/assets/map/style.json'
+
+import 'maplibre-gl/dist/maplibre-gl.css'
+import mapStyle from '~/assets/map/style.json'
 
 const center = { lat: 47.2689, lng: 11.3936 }
 const zoom = 8
 
+const mapContainer = ref<HTMLElement | null>(null)
 const mapInstance = ref<Map | null>(null)
+
 let resizeObserver: ResizeObserver | null = null
 let resizeTimeout: ReturnType<typeof setTimeout> | null = null
 
-const onMapLoad = (event: { map: Map }) => {
-  mapInstance.value = event.map
-  
-  const mapContainer = event.map.getContainer()
-  resizeObserver = new ResizeObserver(() => {
-    if (resizeTimeout) {
-      clearTimeout(resizeTimeout)
+onMounted(async () => {
+  if (process.client && mapContainer.value) {
+    try {
+      const maplibreModule = await import('maplibre-gl')
+      const maplibregl = maplibreModule.default
+
+      const map = new maplibregl.Map({
+        container: mapContainer.value,
+        // @ts-ignore
+        style: mapStyle,
+        center: [center.lng, center.lat],
+        zoom: zoom
+      })
+
+      mapInstance.value = map
+
+      map.on('load', () => {
+        const mapEl = map.getContainer()
+        resizeObserver = new ResizeObserver(() => {
+          if (resizeTimeout) {
+            clearTimeout(resizeTimeout)
+          }
+          resizeTimeout = setTimeout(() => {
+            map.resize()
+          }, 2)
+        })
+
+        resizeObserver.observe(mapEl)
+      })
+
+    } catch (e) {
+      console.error('Failed to load MapLibre', e)
     }
-    resizeTimeout = setTimeout(() => {
-      if (mapInstance.value) {
-        mapInstance.value.resize()
-      }
-    }, 2)
-  })
-  
-  resizeObserver.observe(mapContainer)
-}
+  }
+})
 
 onBeforeUnmount(() => {
   if (resizeObserver) {
@@ -45,6 +61,10 @@ onBeforeUnmount(() => {
   }
   if (resizeTimeout) {
     clearTimeout(resizeTimeout)
+  }
+
+  if (mapInstance.value) {
+    mapInstance.value.remove()
   }
 })
 </script>

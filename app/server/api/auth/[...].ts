@@ -11,10 +11,8 @@ if (!stravaClientId || !stravaClientSecret) {
   throw new Error('Strava client ID or secret is not set in .env')
 }
 
-
 export default NuxtAuthHandler({
   secret: process.env.AUTH_SECRET,
-
   providers: [
     StravaProvider({
       clientId: stravaClientId,

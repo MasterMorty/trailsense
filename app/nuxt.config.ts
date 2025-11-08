@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: {enabled: true},
   modules: [
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
@@ -9,6 +9,11 @@ export default defineNuxtConfig({
     '@sidebase/nuxt-auth',
     'nitro-cloudflare-dev'
   ],
+  runtimeConfig: {
+    auth: {
+      secret: process.env.AUTH_SECRET
+    },
+  },
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -25,7 +30,7 @@ export default defineNuxtConfig({
       include: ["maplibre-gl"],
     },
   },
-  ssr: false,
+  ssr: true,
   auth: {
     globalAppMiddleware: false,
     baseURL: process.env.AUTH_ORIGIN

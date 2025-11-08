@@ -4,7 +4,7 @@ import Map from "~/components/map.vue";
 </script>
 <template>
   <Main>
-    <NuxtRouteAnnouncer />
-    <Map />
+    <NuxtRouteAnnouncer/>
+    <Map/>
   </Main>
 </template>
