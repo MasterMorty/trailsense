@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
             statusMessage: 'Database binding "DB" is not configured.'
         })
     }
-    console.log(db);
+
 
     const ps = db.prepare('SELECT * FROM nodes WHERE id = ?').bind(id)
     const data = await ps.first()

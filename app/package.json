@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare",
     "generate-migrations": "npx drizzle-kit generate --config=./db/drizzle.config.ts",
     "apply-migrations:dev": "npx wrangler d1 migrations apply DB",
-    "apply-migrations:prod": "npx wrangler d1 migrations apply --remote",
+    "apply-migrations:prod": "npx wrangler d1 migrations apply DB --remote",
     "apply-seeds:dev": "npx wrangler d1 execute DB --file=./db/seeds/demo.sql",
     "apply-seeds:prod": "npx wrangler d1 execute --remote DB --file=./db/seeds/demo.sql"
   },
