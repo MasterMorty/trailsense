@@ -2,7 +2,12 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt', 'nuxt-maplibre'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    'shadcn-nuxt',
+    'nuxt-maplibre',
+    '@sidebase/nuxt-auth'
+  ],
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -19,5 +24,8 @@ export default defineNuxtConfig({
       include: ["maplibre-gl"],
     },
   },
-  ssr: false
+  ssr: false,
+  auth: {
+    globalAppMiddleware: false
+  }
 })
