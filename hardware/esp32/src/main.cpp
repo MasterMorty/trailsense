@@ -25,9 +25,8 @@ const String SERVER_URL_STR = String(SERVER_URL);
 const int TEMP_SENSOR_PIN = 4;
 const int DHT_TYPE = DHT11;
 
-const unsigned long UPLOAD_INTERVAL_MS = 5UL * 60UL * 1000UL;    // 5 minutes
-const unsigned long READ_INTERVAL_MS = 1UL * 60UL * 1000UL;      // 1 minute
-const unsigned long INITIAL_TEMP_DELAY_MS = 1UL * 65UL * 1000UL; // 65 seconds (set to 65s to immediately do first read)
+const unsigned long UPLOAD_INTERVAL_MS = 5UL * 60UL * 1000UL; // 5 minutes
+const unsigned long READ_INTERVAL_MS = 1UL * 60UL * 1000UL;   // 1 minute
 
 const unsigned int BLE_SCAN_DURATION_SEC = 5;
 const uint16_t BLE_SCAN_INTERVAL = 100;
@@ -46,7 +45,7 @@ int bleRandomMacCount = 0;
 std::list<std::pair<float, float>> temperatureHumidityReadings;
 
 unsigned long lastUploadTime = 0;
-unsigned long lastReadTime = INITIAL_TEMP_DELAY_MS;
+unsigned long lastReadTime = (unsigned long)(0 - READ_INTERVAL_MS);
 
 DHT dhtSensor(TEMP_SENSOR_PIN, DHT_TYPE);
 
@@ -59,8 +58,9 @@ class BleDeviceResultHandler : public NimBLEAdvertisedDeviceCallbacks
     if (macAddress.length() < 2)
       return;
 
-    // Filter random MAC addresses (IEEE 802-2014: bit 1 of first octet indicates locally administered)
-    // Hex chars '2', '6', 'a', 'e' have bit 1 set: 0010, 0110, 1010, 1110
+    // Filter random MAC addresses (IEEE 802-2014: the locally administered bit is bit 1 of the first octet,
+    // which is the second least significant bit. In the MAC string, this is the second hex digit of the first octet:
+    // hex chars '2', '6', 'a', 'e' (0010, 0110, 1010, 1110) have this bit set.
     char secondChar = tolower(macAddress[1]);
     if (secondChar == '2' || secondChar == '6' || secondChar == 'a' || secondChar == 'e')
       bleRandomMacCount++;
@@ -92,7 +92,8 @@ int scanBLE(unsigned durationSeconds)
 
   NimBLEScan *pScan = NimBLEDevice::getScan();
 
-  pScan->setAdvertisedDeviceCallbacks(new BleDeviceResultHandler());
+  static BleDeviceResultHandler bleDeviceResultHandler;
+  pScan->setAdvertisedDeviceCallbacks(&bleDeviceResultHandler);
   pScan->setActiveScan(false);
   pScan->setInterval(BLE_SCAN_INTERVAL);
   pScan->setWindow(BLE_SCAN_WINDOW);
@@ -145,8 +146,9 @@ int sniffWiFi(unsigned durationSeconds)
 // Environmental Sensors
 void readTemperatureHumidity()
 {
-  float temperature = dhtSensor.readTemperature();
-  float humidity = dhtSensor.readHumidity();
+  float temperature = isnan(dhtSensor.readTemperature()) ? -999.0f : dhtSensor.readTemperature();
+  float humidity = isnan(dhtSensor.readHumidity()) ? -999.0f : dhtSensor.readHumidity();
+
   temperatureHumidityReadings.emplace_back(temperature, humidity);
 
   Serial.printf("Temperature: %.1f C, Humidity: %.1f %%\n", temperature, humidity);
@@ -183,12 +185,22 @@ void connectToWiFi()
   Serial.print("Connecting to WiFi");
   WiFi.mode(WIFI_MODE_STA);
   WiFi.begin(WIFI_SSID_STR, WIFI_PASS_STR);
-  while (WiFi.status() != WL_CONNECTED)
+  const int maxRetries = 20;
+  int retryCount = 0;
+  while (WiFi.status() != WL_CONNECTED && retryCount < maxRetries)
   {
     delay(500);
     Serial.print(".");
+    retryCount++;
   }
-  Serial.println(" connected!");
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    Serial.println(" connected!");
+  }
+  else
+  {
+    Serial.println(" failed to connect to WiFi!");
+  }
 }
 
 // Data Upload
@@ -283,7 +295,7 @@ void loop()
     Serial.printf("\nCycle totals -> BLE: %d  WiFi: %d\n", bleCount, wifiCount);
   }
 
-  if (currentTime - lastUploadTime > UPLOAD_INTERVAL_MS)
+  if (currentTime - lastUploadTime >= UPLOAD_INTERVAL_MS)
   {
     Serial.println("\n--------------------------------------------");
     Serial.println("5-minute upload cycle");

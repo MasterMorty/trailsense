@@ -1,7 +1,7 @@
 # TrailSense - Hardware Code
 
 This part of the codebase contains all of the code that is necessary to measure the amount of users that access a specific trail.
-To do this both WiFi Probe Request Sniffing and BLE Advertisment Scanning is being used for crowd counting. The hardware also measures temperature and humidity using a DHT sensor.
+To do this both WiFi Probe Request Sniffing and BLE Advertisement Scanning is being used for crowd counting. The hardware also measures temperature and humidity using a DHT sensor.
 
 ## Prerequisites
 
