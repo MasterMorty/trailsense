@@ -20,8 +20,12 @@ To do this both WiFi Probe Request Sniffing and BLE Advertisement Scanning is be
 Before uploading the code to the ESP32, you need to create a `secrets.ini` file in the root directory of the ESP32. Take a look at the `secrets.ini.example` file for reference. The file should contain the following information:
 
 ```
-wifi_ssid=your_wifi_ssid
-wifi_pass=your_wifi_password
-server_url=http://your.server.url/endpoint
+[secrets]
+wifi_ssid = your_wifi_ssid
+wifi_pass = your_wifi_password
+server_url = http://your.server.url/endpoint
 ```
 
+## Image
+
+![TrailSense Hardware](/docs/hardware.jpeg)
