@@ -66,7 +66,7 @@ onMounted(async () => {
             'line-cap': 'round'
           },
           paint: {
-            'line-color': '#ff0000',
+            'line-color': ['get', 'color'],
             'line-width': 3,
             'line-opacity': 0.8
           }
@@ -107,7 +107,7 @@ function updateSegments(segments: any[]) {
   if (!mapInstance.value) return;
 
   const features: Feature<LineString>[] = segments.map(segment => {
-    const decodedCoords = polyline.decode(segment.points);
+    const decodedCoords = polyline.decode(segment.pathData);
 
     const geoJsonCoords = decodedCoords.map(coord => [coord[1], coord[0]]);
 
@@ -120,7 +120,7 @@ function updateSegments(segments: any[]) {
       properties: {
         id: segment.id,
         name: segment.name,
-        // color: segment.color,
+        color: '#ff0000',
       }
     };
   });
