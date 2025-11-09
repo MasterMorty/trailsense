@@ -1,8 +1,6 @@
 -- Demo dataset for local development.
 -- Run with: npx wrangler d1 execute DB --file=db/seeds/demo.sql --local
 
-BEGIN TRANSACTION;
-
 INSERT OR IGNORE INTO locations (id, name, address) VALUES
     (1, 'Tourism Technology Hackathon 2025', 'Salzburg Arena, Messezentrum 1, 5020 Salzburg'),
     (2, 'Startpunkt Höttinger Alm', 'Hungerburgbahn Parkplatz, Höhenstraße 145, 6020 Innsbruck, Tirol'),
@@ -17,5 +15,3 @@ INSERT OR IGNORE INTO trails (id, name, location_id, path_data) VALUES
 
 INSERT OR REPLACE INTO nodes (id, location_id, status) VALUES
     (127, 1, 'healthy');
-
-COMMIT;
