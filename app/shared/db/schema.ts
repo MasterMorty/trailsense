@@ -10,7 +10,8 @@ export const locations = sqliteTable('locations', {
 export const nodes = sqliteTable('nodes', {
   id: integer('id').primaryKey(),
   locationId: integer('location_id').references(() => locations.id, { onDelete: 'set null' }),
-  status: text('status').notNull()
+  status: text('status').notNull(),
+  ratio: real('ratio').notNull().default(1)
 })
 
 export const trails = sqliteTable('trails', {

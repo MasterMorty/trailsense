@@ -1,0 +1,1 @@
+ALTER TABLE `nodes` ADD COLUMN `ratio` real DEFAULT 1 NOT NULL;
