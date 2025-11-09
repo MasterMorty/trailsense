@@ -3,9 +3,7 @@ import {Period} from "#shared/models/period";
 import {activities, nodes} from "#shared/db/schema";
 import {and, eq, sql} from "drizzle-orm";
 import { createError } from 'h3';
-
-const BLE_WEIGHT = 0.3;
-const WIFI_WEIGHT = 0.7;
+import {BLE_WEIGHT, WIFI_WEIGHT, normalizeRatio, roundToSingleDecimal} from "~~/server/utils/activityMetrics";
 
 export default defineEventHandler(async (event) => {
     const nodeId = parseInt(getRouterParam(event, 'id') ?? '');
@@ -231,15 +229,4 @@ function buildSummariesFromAggregates({
             temperature,
         };
     });
-}
-
-function normalizeRatio(rawRatio: number | null | undefined): number {
-    if (typeof rawRatio !== 'number' || !isFinite(rawRatio) || rawRatio <= 0) {
-        return 1;
-    }
-    return rawRatio;
-}
-
-function roundToSingleDecimal(value: number): number {
-    return Math.round(value * 10) / 10;
 }
