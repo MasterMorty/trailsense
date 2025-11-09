@@ -236,6 +236,8 @@ async function fetchSegments() {
         }
       ]
 
+      console.log(bounds)
+
       // const data = $fetch("/api/strava/segments", {
       //   method: "GET",
       //   params: {

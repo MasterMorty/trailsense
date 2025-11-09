@@ -12,8 +12,8 @@ import mapStyle from '~/assets/map/style.json'
 import polyline from '@mapbox/polyline'
 import type {Feature, FeatureCollection, LineString} from 'geojson'
 
-const center = {lat: 47.2689, lng: 11.3936}
-const zoom = 8
+const center = {lat: 47.4404, lng: 12.3794}
+const zoom = 13
 
 const mapContainer = ref<HTMLElement | null>(null)
 const mapInstance = ref<Map | null>(null)
