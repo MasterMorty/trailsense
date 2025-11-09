@@ -5,6 +5,7 @@ import pkg from '@googlemaps/polyline-codec';
 import * as schema from '../db/schema';
 import path from 'path';
 import {fileURLToPath} from 'url';
+import * as crypto from 'node:crypto';
 
 const {encode} = pkg;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -13,58 +14,6 @@ const {trails} = schema;
 
 const JSON_FILE_PATH = path.join(__dirname, '..', '..', '..', 'data', 'tours.json');
 const BATCH_SIZE = 1;
-
-function* numberIterator(geoString: string): Generator<number> {
-  let currentPos = 0;
-  while (currentPos < geoString.length) {
-    let nextSpace = geoString.indexOf(' ', currentPos);
-    if (nextSpace === -1) {
-      nextSpace = geoString.length;
-    }
-
-    const numberString = geoString.slice(currentPos, nextSpace);
-
-    if (numberString.length > 0) {
-      yield Number(numberString);
-    }
-
-    currentPos = nextSpace + 1;
-  }
-}
-
-const parseCoordinateString = (geoString: string) => {
-  const numbers = numberIterator(geoString);
-  const coordinates: number[][] = [];
-
-  let lat = numbers.next();
-  let lon = numbers.next();
-
-  let latitudeStart: number | undefined;
-  let longitudeStart: number | undefined;
-
-  while (!lat.done && !lon.done) {
-    if (coordinates.length === 0) {
-      latitudeStart = lat.value;
-      longitudeStart = lon.value;
-    }
-
-    coordinates.push([lat.value, lon.value]);
-
-    lat = numbers.next();
-    lon = numbers.next();
-  }
-
-  if (coordinates.length === 0 || !lat.done || !lon.done) {
-    return {};
-  }
-
-  return {
-    coordinates: coordinates,
-    latitudeStart: latitudeStart as number,
-    longitudeStart: longitudeStart as number
-  };
-}
-
 
 export const workWorkWork = async (db: DrizzleD1Database) => {
   // @ts-ignore
@@ -167,4 +116,55 @@ export const workWorkWork = async (db: DrizzleD1Database) => {
   });
 
   return;
+}
+
+function* numberIterator(geoString: string): Generator<number> {
+  let currentPos = 0;
+  while (currentPos < geoString.length) {
+    let nextSpace = geoString.indexOf(' ', currentPos);
+    if (nextSpace === -1) {
+      nextSpace = geoString.length;
+    }
+
+    const numberString = geoString.slice(currentPos, nextSpace);
+
+    if (numberString.length > 0) {
+      yield Number(numberString);
+    }
+
+    currentPos = nextSpace + 1;
+  }
+}
+
+const parseCoordinateString = (geoString: string) => {
+  const numbers = numberIterator(geoString);
+  const coordinates: number[][] = [];
+
+  let lat = numbers.next();
+  let lon = numbers.next();
+
+  let latitudeStart: number | undefined;
+  let longitudeStart: number | undefined;
+
+  while (!lat.done && !lon.done) {
+    if (coordinates.length === 0) {
+      latitudeStart = lat.value;
+      longitudeStart = lon.value;
+    }
+
+    coordinates.push([lat.value, lon.value]);
+
+    lat = numbers.next();
+    lon = numbers.next();
+  }
+
+  if (coordinates.length === 0 || !lat.done || !lon.done) {
+    return {};
+  }
+
+  return {
+    coordinates: coordinates,
+    latitudeStart: latitudeStart as number,
+    longitudeStart: longitudeStart as number
+  };
 }
