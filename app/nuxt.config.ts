@@ -6,14 +6,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     'nuxt-maplibre',
-    '@sidebase/nuxt-auth',
     'nitro-cloudflare-dev'
   ],
-  runtimeConfig: {
-    auth: {
-      secret: process.env.AUTH_SECRET
-    },
-  },
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -31,8 +25,4 @@ export default defineNuxtConfig({
     },
   },
   ssr: true,
-  auth: {
-    globalAppMiddleware: false,
-    baseURL: process.env.AUTH_ORIGIN
-  }
 })
