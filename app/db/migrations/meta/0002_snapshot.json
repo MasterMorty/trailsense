@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0b7b7753-4791-4788-aff5-e52300a5e7eb",
-  "prevId": "a4d8d032-35da-43d5-831e-b7255ec16e77",
+  "id": "8a0d8c2d-da7d-449f-93e4-27cb625f2274",
+  "prevId": "a9d062ca-b5bc-44a1-bb44-bb75e1cfbb60",
   "tables": {
     "activities": {
       "name": "activities",
@@ -78,6 +78,37 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
+    "locations": {
+      "name": "locations",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "nodes": {
       "name": "nodes",
       "columns": {
@@ -88,8 +119,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "trail_id": {
-          "name": "trail_id",
+        "location_id": {
+          "name": "location_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
@@ -101,37 +132,21 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
-        },
-        "ratio": {
-          "name": "ratio",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": 1
-        },
-        "battery": {
-          "name": "battery",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": 0.75
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "nodes_trail_id_trails_id_fk": {
-          "name": "nodes_trail_id_trails_id_fk",
+        "nodes_location_id_locations_id_fk": {
+          "name": "nodes_location_id_locations_id_fk",
           "tableFrom": "nodes",
-          "tableTo": "trails",
+          "tableTo": "locations",
           "columnsFrom": [
-            "trail_id"
+            "location_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -156,30 +171,37 @@
           "notNull": true,
           "autoincrement": false
         },
+        "location_id": {
+          "name": "location_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "path_data": {
           "name": "path_data",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "latitude_start": {
-          "name": "latitude_start",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "longitude_start": {
-          "name": "longitude_start",
-          "type": "real",
+          "type": "blob",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "trails_location_id_locations_id_fk": {
+          "name": "trails_location_id_locations_id_fk",
+          "tableFrom": "trails",
+          "tableTo": "locations",
+          "columnsFrom": [
+            "location_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}

@@ -29,6 +29,20 @@
       "when": 1762678232141,
       "tag": "0003_greedy_paladin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1762647387509,
+      "tag": "0001_crazy_patch",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1762647614062,
+      "tag": "0002_fearless_roxanne_simpson",
+      "breakpoints": true
     }
   ]
 }
