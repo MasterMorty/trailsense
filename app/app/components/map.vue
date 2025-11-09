@@ -111,6 +111,9 @@ function updateSegments(segments: any[]) {
 
     const geoJsonCoords = decodedCoords.map(coord => [coord[1], coord[0]]);
 
+    // @ts-ignore
+    const visible = deterministicRandom(segment.id) > 0.65;
+
     return {
       type: 'Feature',
       geometry: {
@@ -120,7 +123,7 @@ function updateSegments(segments: any[]) {
       properties: {
         id: segment.id,
         name: segment.name,
-        color: '#ff0000',
+        color: `rgba(255,0,0,${visible ? 0.2 : 0})`,
       }
     };
   });
@@ -135,6 +138,11 @@ function updateSegments(segments: any[]) {
     // @ts-ignore
     source.setData(geoJsonData);
   }
+}
+
+const deterministicRandom = (seed: number) => {
+  const x = Math.sin(seed * 9999) * 10000;
+  return x - Math.floor(x);
 }
 
 defineExpose({
