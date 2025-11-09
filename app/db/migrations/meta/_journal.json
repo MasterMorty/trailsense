@@ -36,6 +36,13 @@
       "when": 1762661185920,
       "tag": "0004_battery_status_column",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1762679999000,
+      "tag": "0005_nodes_trail_mapping",
+      "breakpoints": true
     }
   ]
 }

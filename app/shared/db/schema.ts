@@ -1,25 +1,18 @@
 import { blob, integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import {sql} from "drizzle-orm";
 
-export const locations = sqliteTable('locations', {
+export const trails = sqliteTable('trails', {
   id: integer('id').primaryKey(),
   name: text('name').notNull(),
-  address: text('address')
+  pathData: blob('path_data')
 })
 
 export const nodes = sqliteTable('nodes', {
   id: integer('id').primaryKey(),
-  locationId: integer('location_id').references(() => locations.id, { onDelete: 'set null' }),
+  trailId: integer('trail_id').references(() => trails.id, { onDelete: 'cascade' }),
   status: text('status').notNull(),
   ratio: real('ratio').notNull().default(1),
   battery: real('battery').notNull().default(0.75)
-})
-
-export const trails = sqliteTable('trails', {
-  id: integer('id').primaryKey(),
-  name: text('name').notNull(),
-  locationId: integer('location_id').references(() => locations.id, { onDelete: 'cascade' }),
-  pathData: blob('path_data')
 })
 
 export const activities = sqliteTable('activities', {
@@ -31,9 +24,6 @@ export const activities = sqliteTable('activities', {
   humidity: real('humidity'),
   createdAt: text('created_at').default(sql`(current_timestamp)`).notNull()
 })
-
-export type Location = typeof locations.$inferSelect
-export type NewLocation = typeof locations.$inferInsert
 
 export type Node = typeof nodes.$inferSelect
 export type NewNode = typeof nodes.$inferInsert
