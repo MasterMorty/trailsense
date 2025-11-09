@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { createWriteStream, mkdirSync } from 'node:fs'
+import { createWriteStream, mkdirSync, readFileSync, existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { once } from 'node:events'
 
@@ -117,6 +117,7 @@ const DEFAULTS = {
   busyFactor: 1.35,
   calmFactor: 0.75,
   output: './db/seeds/demo.sql',
+  activitiesFile: './db/seeds/data.txt',
   seed: undefined,
 }
 
@@ -143,6 +144,7 @@ async function main() {
   const startTime = getStartTime(startArg, config.days, config.slotMinutes)
   const dayWeather = buildDayWeather(config.days)
   const nodeProfiles = buildNodeProfiles()
+  const manualActivities = loadManualActivities(config.activitiesFile)
 
   await writeChunk('-- Auto-generated demo dataset.\n')
   await writeChunk(`-- Generated at ${new Date().toISOString()}\n`)
@@ -163,6 +165,7 @@ async function main() {
   }
 
   await writeNodes(writeChunk, nodeProfiles)
+  await writeManualActivities(writeChunk, manualActivities)
   await writeActivities(writeChunk, {
     nodeProfiles,
     dayWeather,
@@ -198,17 +201,35 @@ async function writeNodes(writeChunk, nodes) {
   }
 }
 
+async function writeManualActivities(writeChunk, activities = []) {
+  if (!activities || activities.length === 0) {
+    return
+  }
+
+  await writeChunk('INSERT INTO activities (id, node_id, ble, wifi, temperature, humidity, created_at) VALUES\n')
+  for (let i = 0; i < activities.length; i++) {
+    const row = activities[i]
+    const suffix = i === activities.length - 1 ? ';\n\n' : ',\n'
+    await writeChunk(
+      `  (${row.id}, ${row.nodeId}, ${row.ble}, ${row.wifi}, ${formatMetric(row.temperature)}, ${formatMetric(row.humidity)}, '${escapeSqlString(row.createdAt)}')${suffix}`,
+    )
+  }
+}
+
+const ACTIVITY_ID_OFFSET = 200
+
 async function writeActivities(writeChunk, context) {
   const { nodeProfiles, dayWeather, startTime, totalSlots, slotsPerDay, slotDurationMs } = context
   const batch = []
   const batchSize = 900
+  let activityId = ACTIVITY_ID_OFFSET
 
   const flushBatch = async () => {
     if (batch.length === 0) return
     const values = batch
       .map((row, index) => `  ${row}${index === batch.length - 1 ? ';\n' : ',\n'}`)
       .join('')
-    await writeChunk('INSERT INTO activities (node_id, ble, wifi, temperature, humidity, created_at) VALUES\n')
+    await writeChunk('INSERT INTO activities (id, node_id, ble, wifi, temperature, humidity, created_at) VALUES\n')
     await writeChunk(values)
     await writeChunk('\n')
     batch.length = 0
@@ -225,7 +246,7 @@ async function writeActivities(writeChunk, context) {
 
       const stats = buildSlotStats(slotTime, node, weather)
       batch.push(
-        `(${node.id}, ${stats.ble}, ${stats.wifi}, ${stats.temperature.toFixed(1)}, ${stats.humidity.toFixed(0)}, '${formatDateTime(slotTime)}')`,
+        `(${activityId++}, ${node.id}, ${stats.ble}, ${stats.wifi}, ${stats.temperature.toFixed(1)}, ${stats.humidity.toFixed(0)}, '${formatDateTime(slotTime)}')`,
       )
 
       if (batch.length >= batchSize) {
@@ -235,6 +256,66 @@ async function writeActivities(writeChunk, context) {
   }
 
   await flushBatch()
+}
+
+function loadManualActivities(filePath) {
+  if (!filePath) return []
+  const resolvedPath = resolve(process.cwd(), filePath)
+  if (!existsSync(resolvedPath)) {
+    return []
+  }
+
+  try {
+    const raw = readFileSync(resolvedPath, 'utf8')
+    const lines = raw.split(/\r?\n/)
+    const activities = []
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim()
+      if (!line || line.startsWith('#')) continue
+      const parts = line.split('\t')
+      if (parts.length < 7) {
+        console.warn(`Skipping malformed manual activity line ${i + 1}`)
+        continue
+      }
+
+      const [idStr, nodeIdStr, bleStr, wifiStr, temperatureStr, humidityStr, createdAtRaw] = parts
+      const id = Number(idStr)
+      const nodeId = Number(nodeIdStr)
+      const ble = Number(bleStr)
+      const wifi = Number(wifiStr)
+      const temperature = Number(temperatureStr)
+      const humidity = Number(humidityStr)
+      const createdAt = createdAtRaw.trim()
+
+      if (
+        !Number.isFinite(id) ||
+        !Number.isFinite(nodeId) ||
+        !Number.isFinite(ble) ||
+        !Number.isFinite(wifi) ||
+        !Number.isFinite(temperature) ||
+        !Number.isFinite(humidity) ||
+        !createdAt
+      ) {
+        console.warn(`Skipping invalid manual activity line ${i + 1}`)
+        continue
+      }
+
+      activities.push({
+        id: Math.trunc(id),
+        nodeId: Math.trunc(nodeId),
+        ble: Math.trunc(ble),
+        wifi: Math.trunc(wifi),
+        temperature,
+        humidity,
+        createdAt,
+      })
+    }
+
+    return activities
+  } catch (error) {
+    console.warn('Failed to load manual activities:', error)
+    return []
+  }
 }
 
 function buildSlotStats(timestamp, node, weather) {
@@ -472,6 +553,10 @@ function buildConfig(args) {
     busyFactor: parseFloatArg(args['busy-factor'], DEFAULTS.busyFactor),
     calmFactor: parseFloatArg(args['calm-factor'], DEFAULTS.calmFactor),
     output: typeof args.output === 'string' ? args.output : DEFAULTS.output,
+    activitiesFile:
+      typeof args['activities-file'] === 'string' && args['activities-file'].length > 0
+        ? args['activities-file']
+        : DEFAULTS.activitiesFile,
     seed: args.seed !== undefined ? parseIntArg(args.seed, Date.now()) : Date.now(),
   }
 }
@@ -547,6 +632,13 @@ function formatNullableNumber(value) {
     return Number(value).toFixed(6)
   }
   return 'NULL'
+}
+
+function formatMetric(value) {
+  if (!Number.isFinite(value)) {
+    return 'NULL'
+  }
+  return Number.isInteger(value) ? `${Math.trunc(value)}` : Number(value).toFixed(1)
 }
 
 function formatDateTime(date) {

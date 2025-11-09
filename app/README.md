@@ -89,5 +89,6 @@ Available flags:
 - `--global-traffic` — multiplies overall visitor intensity.
 - `--busy-factor` / `--calm-factor` — tweak how much busier or calmer the most/least visited nodes become.
 - `--slot-minutes`, `--max-visitors`, `--seed`, `--output` — advanced controls for cadence, caps, deterministic output, and destination file.
+- `--activities-file` — optional TSV list (defaults to `db/seeds/data.txt`) converted into explicit `activities` inserts.
 
 The generated file replaces `db/seeds/demo.sql`; pass any of the flags above to tailor scenarios, then execute the regular `apply-seeds` command to load the data into your local D1 instance.
