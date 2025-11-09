@@ -4,6 +4,7 @@ import {activities, nodes} from "#shared/db/schema";
 import {and, eq, sql} from "drizzle-orm";
 import { createError } from 'h3';
 import {BLE_WEIGHT, WIFI_WEIGHT, normalizeRatio, roundToSingleDecimal} from "~~/server/utils/activityMetrics";
+import type {NodeActivitiesResponse, ActivitySummaryBucket} from "#shared/models/api/nodes";
 
 export default defineEventHandler(async (event) => {
     const nodeId = parseInt(getRouterParam(event, 'id') ?? '');
@@ -96,7 +97,7 @@ export default defineEventHandler(async (event) => {
         temperatureSamples: aggregates.reduce((acc, row) => acc + Number(row.temperatureSamples ?? 0), 0),
     };
 
-    const response = {
+    const response: NodeActivitiesResponse = {
         nodeId,
         period,
         date,
@@ -117,14 +118,6 @@ export default defineEventHandler(async (event) => {
     return Response.json(response);
 
 });
-
-type SummaryBucket = {
-    start: string;
-    end: string;
-    activations: number;
-    samples: number;
-    temperature: number | null;
-};
 
 type AggregateRow = {
     bucket: number | null;
@@ -184,7 +177,7 @@ function buildSummariesFromAggregates({
     bucketCount: number;
     bucketDurationMs: number;
     ratio: number;
-}): SummaryBucket[] {
+}): ActivitySummaryBucket[] {
     const rangeStartMs = rangeStart.getTime();
     const bucketMap = new Map<number, {
         activationSum: number;

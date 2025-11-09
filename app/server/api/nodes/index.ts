@@ -2,6 +2,7 @@ import getDb from "~~/server/utils/db";
 import {nodes, activities} from "#shared/db/schema";
 import {and, sql} from "drizzle-orm";
 import {BLE_WEIGHT, WIFI_WEIGHT, normalizeRatio} from "~~/server/utils/activityMetrics";
+import type { NodesListResponse } from "#shared/models/api/nodes";
 
 export default defineEventHandler(async (event) => {
     const db = getDb(event);
@@ -38,7 +39,7 @@ export default defineEventHandler(async (event) => {
 
     const nodesResult = await db.select().from(nodes).all();
 
-    const payload = nodesResult.map((node) => {
+    const payload: NodesListResponse = nodesResult.map((node) => {
         const ratio = normalizeRatio(node.ratio);
         const rawValue = activationMap.get(node.id) ?? 0;
         const activationsToday = Math.trunc(rawValue / ratio);

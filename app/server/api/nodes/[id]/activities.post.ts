@@ -1,6 +1,7 @@
 import getDb from "~~/server/utils/db";
 import { createError } from 'h3';
 import {activities, NewActivity} from "#shared/db/schema";
+import type {CreateActivityBody, CreateActivityResponse} from "#shared/models/api/nodes";
 
 export default defineEventHandler(async (event) => {
     const nodeId = parseInt(getRouterParam(event, 'id') ?? '');
@@ -8,10 +9,11 @@ export default defineEventHandler(async (event) => {
         throw createError({statusCode: 400, statusMessage: "Invalid or missing node ID"});
     }
 
-    const body = {...(await readBody(event)), nodeId} as NewActivity;
+    const requestBody = await readBody<CreateActivityBody>(event);
+    const body = {...requestBody, nodeId} as NewActivity;
     const db = getDb(event);
 
-    const result = await db.insert(activities).values(body).returning().all();
+    const result = await db.insert(activities).values(body).returning().get();
 
-    return Response.json(result);
+    return Response.json(result as CreateActivityResponse);
 })
