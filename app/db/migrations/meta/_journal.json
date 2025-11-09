@@ -43,6 +43,13 @@
       "when": 1762647614062,
       "tag": "0002_fearless_roxanne_simpson",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1762656594515,
+      "tag": "0003_balanced_ratio_column",
+      "breakpoints": true
     }
   ]
 }
