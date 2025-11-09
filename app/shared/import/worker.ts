@@ -42,16 +42,17 @@ class DrizzleBatchTransform extends Transform {
 
         if (coordinates.coordinates && coordinates.coordinates.length > 0) {
           const encodedPathData = encode(coordinates.coordinates!, 5);
+          if(trail.County === "Tirol"){
+            this.batch.push({
+              id: trail.id,
+              name: trail.title,
+              pathData: encodedPathData,
+              latitudeStart: coordinates.latitudeStart!,
+              longitudeStart: coordinates.longitudeStart!
+            });
 
-          this.batch.push({
-            id: trail.id,
-            name: trail.title,
-            pathData: encodedPathData,
-            latitudeStart: coordinates.latitudeStart!,
-            longitudeStart: coordinates.longitudeStart!
-          });
-
-          this.totalProcessed++;
+            this.totalProcessed++;
+          }
         }
       }
 

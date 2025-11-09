@@ -5,10 +5,69 @@ import { dirname, resolve } from 'node:path'
 import { once } from 'node:events'
 
 const TRAILS = [
-  { id: 1, name: 'Arena Innovationsrunde (Loop)' },
-  { id: 2, name: 'Höttinger Alm Panorama-Runde' },
-  { id: 3, name: 'Gaistal Almenweg zur Tillfussalm' },
-  { id: 4, name: 'Zittauer Hütte Zustieg ab Finkau' },
+  {
+    id: 1,
+    name: 'Tourism Technology Hackathon 2025',
+    pathData: 'ut{bH{monAWkBL|@`Aa@aA^WgBdAa@eAb@Ky@dAc@cAd@OcAL`Ad@QM{@Lz@t@_@O_Af@WNdAd@SOiAOoAe@VJx@i@TM{@',
+    latitudeStart: 47.824362,
+    longitudeStart: 13.027937
+  },
+  {
+    "name": "Hahnenkamm Trail",
+    "id": 105392355,
+    "pathData": "evm`HwdojABAF@BBDBFBFDFHHFHBLDJFJHLBLBHBHCDEBEBCDADAHEHCJ@FA?GGEEC?GDCDAH?FAJ@JBL?J?HEJCJBJFHDLBJ@LAJ?JCH?HDF?F?F@D?@IEIGCE@EAAE@ED?F@D?BANODAH?FDHJFDFDH@HBF?@ICIIEGCCEAGBIHAHBJHHHJFHJHDHBHFHFJFFFDA?KCMGIEGCKCKGMGIIKIMKIOGMMKMKOKMIOKOKKKIIGCG@GH@HDJDLFHHJJJDJHHHF?BKCMGMIOIOGMGMEKGEIAIEKGKGIGIKIMIKKKMCK@MBMBMCKGKKKKIGK?GAGAECICGAEAC?CAGc@GMEMEICI@GBEDBBJFHF@?KEMEKCMCMAQEQGMGKGIKGKGKEIGMIMGOIMKMIGI@KDIJALBJBL?LBHDFFFADEHEHAJ@J@LAJ?J@HDHFJFFHHJHHFJDFDBBBF@F?FAFGE[GKGIEOEMEMAIPFNTDJHB@KKe@G]BINNJ\\HJFHDHDHJ[Mi@MY?IDBPVHLFJHHFDHAGg@Q]Q[OWAI?EFAB@DBFBHDJDJDHHJJJHJHH@DI@OGQIOKMIOIOIOGQGQEMEOEOCKAOCOCOEOEOGOKSKQYa@IOIOIKKMIMGMIOGMGMCK@EFAJDJFPJNJRJRHTJTJRJPHLBFAFSCOIKGIKKKKMOKMIKKIKIIIIMIMGKCMAKCKGGK?K@MBI?KE[K[CUYK[IGGEEEGEEI@IHKDMBSW]SSRQM]M]TERKEa@J_@Ge@Gg@Ga@A_@OeAKo@KWYUg@[UUWOYOWQWOUMUKYKUKSMUKQMUMUOUKOISKK_@OOJ@B@C_@Oa@K_@Kg@Me@Ma@KYI[G]GWG]I]Kc@Ge@Ie@A_@OU[QQOSWQQPKGYUOQUQIQL[@QMB[QEGHMJS`@KZMZIT?^AHCLALE^I`@I`@IVQTMRMTQNONQPMZQ\\[NQFQDYLY@MWCa@WJ@_@POA[Bc@J_@C[S?QPBa@Ha@ZSQSLQQ?SCQGPMVEPASSQILUUQWCQ?QFMRORK^KZMZKVA[J_@WJSPQNQFJa@H]H_@HYH]H_@LYLSLWF]JWYHOXOTWTMNU?YNWLUHSDWLSTM^K^Ob@SXOZU\\KZG_@@_@SFQVIXK\\SAOPDXB`@IZWDSASJMNSd@M`@MZGl@CXM\\K\\CX?e@QXG]JW@a@Ib@MVIVIb@Kb@UMQNIZS\\_@B_@ASLMPW@SMKYK_@Q[I[QOUIG_@SSOQQUUUQMSBHYSGBc@SEMRWNWGUEFi@VUTOKWYNSRQTI^A]Da@F[TSLUa@BYJ]LCSHKJ]Fe@Fc@OSIUQFWR[BUMS?YB_@BYE]G]EOEOCQAYGOQUAS@WPQ@YK]S[UYA]D",
+    "latitudeStart": 47.42515,
+    "longitudeStart": 12.37084
+  },
+  {
+    "id": 108781978,
+    "name": "Sommererlebnis Streif",
+    "pathData": "k~m`HwlojAAbA@LEDED??@HDX?b@@f@DZ?@HSHMJKHEDED?@DETGNEN@@RBJBFF@DAHCHKNOJILILJFPLHF`@Fd@T`@TPJ\\NPDPHZNFTFFBBDb@Bb@BbB?`BAd@AZAfACpABp@?b@@ZX`CB~@Dv@Df@Dh@NbAJz@BPP\\PTTTDFLZVjAHNFHDBDBJDP@H@FBDDFVF^Nr@Jb@DPFRJPHFF@J?LARCDAF@@@BBJNDRFNDBBEBGJk@Jq@Jk@BOBIDI@ABA?I?a@Ba@Dm@Lo@Q]u@{AGYMs@Oo@GQIQMSQSMSEGEMMWKSMSIMMQK]G[Eg@Ac@@]Bg@BWDa@D]BQ?K?K?WEq@Cc@C[EUIMKGM?MBE@GAEACCCEAGAEAIAMAI?K@I@OBQDW@K@I?I?GCEACGCEACHCPMNMDO@OG[c@Y_@U]MQGQAGEMGSCGCIEm@C_@G]IQGMQUWWSIc@Se@QOG]WYYm@k@OAAK?_@@c@",
+    "latitudeStart": 47.42646,
+    "longitudeStart": 12.37212
+  },
+  {
+    "id": 110327715,
+    "name": "7 Rund um die Hohe Salve",
+    "pathData": "uyq`Hy}rjALu@^`AFTTn@BPEFFD?Cs@CVr@HVJbAMh@aAhDy@zAcBhC]j@c@jAc@vAaAzA{BjBs@rAYbA{@vDqAlBq@f@kA`AWZi@|@s@pBa@dCEp@ItCYhHw@vIcAtFiAvDgCpHsChI{@fDkAfE}@dD}@|BQ`@yAjFeAnEoAtFgAdByAn@YEmBIuBf@{A`Cg@bC]rFDnCT`FHnBJdAKz@a@p@?JHV`@`Az@xAb@fAz@dAd@j@HbAA\\EtG@`AU~BE^?fCHdA@bELzBThDb@bEFj@F|@Ld@Tv@P?PSb@PJ`ADVv@hC`A`DdAbE`@dCVrCPtBh@~@p@l@t@zAV~@l@pBRx@Nj@DVFT@?Lj@TbA\\xAn@~CP`ABHQV_@?Ok@Mw@a@HDzAl@`EJbEV`E`@dFj@lCnAhEbAbENbAXbDf@xG\\bFl@pHPjCP|BXnCj@vEpA`Ev@|BjBnF~@vDt@`FP~BJxAJpAIfAQd@ARCr@HlBRt@R[Nr@RxC@dA]hBSPoBdCwB|C]t@eAvCiAhEIZcAlE{@vDOzBEhEKbCYdEAf@L|CTjAV|@b@Zf@GjCOnD?xCCn@Dz@`@NHp@Th@p@BdAS`A[`EAvACzFPzBl@rCNfDMnGYnBg@p@oClDW~A?b@BtFFrFDr@@tBEv@JbCF\\~@xD`AnDx@xCdBxGXrBDfB@VFxAB|BJlENbDt@xDr@fDFb@N|AXl@NDt@Pn@|@Ef@Q`CGxDItBEp@?nBBbD?^DbG?|@UpBiAhFIZ[hCSrBk@dCaAnDs@jF[fCs@jBuBpDeAdDGRIb@@?^^b@n@XlBQdAUbBAr@DlETdAZ\\j@f@Vp@Av@DpDTlEBXTd@d@MXFDr@?n@^lApA|ATVRp@DnAJ|CJ|BErDMtFMjCC`@Kj@_@GaAWMEg@Sg@DOz@BvALv@z@pDtA`Fj@hBd@rCp@fChAxEt@nEVnD^fHL~DPzCVtBj@xATRtBdCjBjCfA|AlBbDr@lAj@vBfA~Dt@nBZv@PXX`@x@bB^z@T`@h@~Al@zBHZJZZv@l@bBHX~@vA`CpBpC|AbD|ArCl@zAl@THt@hAv@jDdAjCxAlDd@zAThC@fACbA?`ARzCh@lFb@nBTn@B@BHDL\\\\dBx@x@f@dAnAf@dAZz@x@hAh@r@r@`B~AxDdArDxAfDbAlB`A|B`A~AzChEhCjDf@j@TVVZr@v@`ArBfAlClBhD`AfDzAlGnBdH~AlFl@fBXbB@d@NfEFnDC~E?vAQbDy@~CWrAXv@XLPJh@^\\PdASl@Ap@BhBp@vAbA~@Qz@{@tBmBl@m@bBk@ZBlC]fAg@LSVg@j@w@NARd@Bt@Vx@~@@j@Fl@`@fBfBPP\\NZQv@_@t@a@j@q@`@?BRM\\MTy@~Bg@~@_ALkAOcBs@iBIkALeA^iApB}AdDg@v@kA`@kDf@sCdAqATgAe@UWsA_AgAFe@p@YfAYnDCtB}@lFc@bB]~@c@f@q@n@_Bb@[DcDlAwCpAm@`AI`@YjAQNmBpD}AvBcCfCuBpCkAbBORcAr@iBhAkB`ByB`DeA`BkEfF_CnCYZgApCw@tCkAbBsARmER}Bl@gBnAy@zAgA|BKTQrAIb@EFBTDLbA|APbBDvDZbBOpCo@r@{BbDmB|ByAdAwDdB}AnBi@vBgA`DmC~DmArAwApAwAdAoALwBXc@TyAH{@RsAlAq@HUM{AJMZM\\gBrEyAvDiCfGeBfCoAtAwCtCYTuCzAyA|@u@t@iAdA{@v@aAz@eAx@qBnAwBbBiCpCeCzBmB`BcCpBq@Lw@Sg@BcBbAk@RyAz@gAX{Ax@_AdAaBbB_Ac@YaAWkAFOFi@SCa@b@AlAH`Bd@nDFVI`Am@Ru@p@MZ{@fAi@H_AOkAeAsA[{@^i@DoBDsBZUMaBo@gAeBEe@c@}CgAyBmAm@{@C{@XoA~@YZeDfFgElGqApBoAh@OEQYM_@I@SNeA[wB_BoBqBuCaDmCwDkC{FyBoEiCqBgE}BuCuC_FwEmAs@}Ba@wARsAn@cB|Bu@dA}@\\aB^e@G?EEIi@}Ai@}AsAoCq@iAiCwDmCyDaCiEuAyD{@oEm@mGa@qFM{Ao@_FeA}EoA}CcBmC{BsBgE{CsIqG}C}CqDyE_BcCW]IKQD_@Oq@gAeAkASQoB_BiB{Ag@g@[@y@Dq@YeAiAOYqAeDsA}BmAoAi@c@{BcBw@k@i@S{@g@gBcAgAo@SOeBeBi@g@oA_CgB_CqAyA_@[qAs@eAmA[_A@u@RmBVsCLiAKmCsAeGGa@QoDG}@a@gBYy@_AiB[kBT_AZ{@lAoDP_AJcB?a@C}B\\sA^e@z@gBh@aBlA{A|AcA|@e@VSBI??WiAi@}@{AiCaCyDgCyEK]WaCWsEEwB?mC_@sBMYq@mB_@iCk@sD}@oEo@cBq@oA]w@S_AGg@CwAC_AIgA[}Bg@}A_@{@SuAUqCC_@KgDM}CI}@e@}Ei@yBgA{D_AiEeA_Di@yAaAiBkA}AyA{@i@a@g@}@O]s@s@o@a@{Ao@}Ay@aA[sAm@eBgBsAqBm@eC?g@KwDAs@Uc@]IGQ_A_CsAwBwB_DeCqD_C}Dk@uAcAcE_@}CUwEi@wHk@eEkCyQuAkJ_A{HYmGCwEPwGb@sGBgDOgDSkBaBmHsAkHYoEi@oHm@sDw@mDs@sEUiCPw@HIt@uB@c@N{DVyDJ{DAwBFkFl@yDHe@ZkBLmC?qFFsCCaAW{AS}A@{CP{GJ{H@kGS{ESaFJiDNoGQ_Dg@sCw@kD]cBa@mCY_EIwAEcBAeAHqARgBReA\\qAd@kAJSLU^s@d@}@`AmB`AgCv@eDr@mDz@wD^yArAiEbBgFn@sBrAgExB_HfAkDtCaJPk@nAiEp@}CHa@z@aBr@cAh@sAvAaCnAwBLSv@]PEBAAq@a@sCKeBOwCC[EiC?mBd@kDHc@F}CEi@YoFGkAGgCEaBKwDAmAZqCHa@FaCGmAAI@OESAg@@w@ByALeDHoEA}B@{A?]KwDSaESwBO_B]aEOcD?mB@mEJeEDyASeBa@yBIeACs@Go@Wu@c@eBMuABk@Hy@IgBEc@MqAAiC@cEDoETyHR{GBgBBsBLsBPsDDeEOoGg@eFi@kE[mCMgDA{DIaCCYVoATs@D}@F_Aj@eCp@eDz@iEx@mDz@oCzAaBp@mAFoAKoABqBj@cAZg@dC}EXo@x@}AnCgCh@O~IuBlEiA|Dw@b@KxAgA|AaAb@KbAQfB{AtA[JZjBlCnBdBxC~Br@hATd@d@pCDlB@hEv@pB~@Wr@a@vAc@xAxAD~AFrCErHBl@b@dAx@ZV?|@s@`CcAdAKnC@vCh@lFjAtF|AfDx@tEn@bDr@|BDbHJvDX~A?XAd@\\Bp@V~Cf@zCd@xBvAfCvAbAfBZhACjH}@vCOnB\\vEdBzAb@rCRxDBtBp@nCbA\\FlC?zBGtBNp@HdCYfBNfD|@tAKt@aAVaATgAdA}BnBsCtCmDnBsAxAs@bHkDnCeBfCiCvC{DzAgBzAcAdCw@nDcAvCkAvCmBnCoCzB}ClD{EvCcDx@_ANy@CU]cDYwEAaENqCd@gClAgCrAu@|AG^BtANz@]t@gAn@aBtAmG\\{Ax@eD`A_D`AiClAcEdAyD^wAf@cBp@oBjAiDfBcF`BiF`AuEj@{Ej@oHPaFT}DT}AfAuC`AgAlCkBx@gBHa@PaAj@_CL[p@eAxAoAb@]r@mAHUR}AfA}AjAkB`AsBh@mBZsAJM@A@OEa@[i@KUUq@AKGUQP?AAGAA@?UMKQA]",
+    "latitudeStart": 47.44619,
+    "longitudeStart": 12.39021
+  },
+  {
+    "id": 117356258,
+    "name": "Bauernhaus-Museumsweg",
+    "pathData": "wsr`Ha|sjADTFTFLFH?@FJHL?@FJ??@BNCP?LGFANGBTJX?@Jb@H\\@@DPDT@?@P?B@b@@X?D?V??B`@?PDN@NFLSNUXUTSRQNA@WLA?QRA?WP_@J??WH??SF??SHKBYL_@LA?]LA?YL??_@JYF]Hc@H_@H??YFYDC?WFa@Ha@J]H??UFYDA?]JY@]@[?UA?@K?A^?h@B^?BDh@c@H??c@NC?a@JA?i@RC?A?o@Pe@PA?c@LG?C@[Ng@J]F[Em@Eg@CWCc@A_@AO?K?WBYDA?WDA?YBSBYLYHWL_@L[\\]f@Y\\WZ[`@QZ[d@_@d@U\\U\\[\\]XWR[JWB]?YC_@?]EAAY?]GQ@SCSCSCSAYAUEUBA?YAA?W@??]BWBYB_@F[@a@H??U?Y?Y?U?WIS?AAYEOE_@GUESCQCS???MCS@[H]HONQTOVKXGXE[QEGCGGQFA?MNIVCNMNOBO?OM?AMWOUQWOSOQOSS?AAOA?@Q?UEA?Q?Ea@EWC_@EQA]@a@Ak@?g@Aa@A]A_@AW?[C_@?c@@e@@[Do@Ba@Ba@Ba@?C@k@F_@@W@?@Y?KL?RAPCRATGTE@@T@RJZNXD?@T@R@VAVC\\ED?DAZAR?@?XCVCVMTKPKVM@?VQ??VK@?LKPGT?TAZA\\GR?TCX?ZE@?\\E^G??XE@@ZGZMZG??ZOXIA?RIPCPBPPRLNPBBPJ@?NN??RNNHTBX@ZE?ARG@?\\M??XGVI??^I`@O@?XG@?XG@?RITI?AVK?@NM\\YXSRSRSVU??TWPO??ROTOTQ??XSXQTQZSZSTKPKVKl@[\\Sb@Q`@QZK`@Sb@OVI`@SVGZOZOTKVORMPQRYV]TYPWRWTWZk@Ta@RYJITQTYR[NSXQ^ERGL?LBR@^E^CTBRDXLZHXJLBRFLBRC@?N@LGB?RO??NBPAHHL\\HVJX@@HP?BN\\H^DPJTHN[TQT?VBR?@@N@T?@BR?N@L",
+    "latitudeStart": 47.45036,
+    "longitudeStart": 12.39505
+  },
+  {
+    "id": 121300841,
+    "name": "Ganslern Trail",
+    "pathData": "{rq`HetrjAG?G?K?A?AE??AGEYCGEYCKCMABGBI@G?GAIEKIEJEHCFCD??EDCFAJ?@CHADU`AENOj@GN??]bA?@QXq@dAiAlBi@z@AFQh@IXGVGPGTGTGLQXGFIHMJSPo@VOLGFQLKLKNIJEHGHEJKPIV??Qn@IXGXIVG\\Gb@EVIVOTk@z@OVMPs@b@o@j@i@f@_@h@SZMZM^M\\Kb@Mn@K|@Ez@Ez@CfAAn@CXGd@Kd@ATF@FBCh@Cj@IbAM~AO`BKpASvAId@Ov@SfAQp@[nAi@xAk@`Bm@fB[|@[|@[~@Yx@Un@KXENGDGFIRKTO\\ALNPDH@?@AJ[@E@A@?B?FFHHJH@D??@D?HAFCDC@GBEBCD???BDBHBFCHCDDDB@BD@BA@?B?@CBEBE@CBEBEBE@G@EBC@EBABABCBAB?B?D@FGDCBEBCBCBADC@ABABEDEDABC@AFCF@BF?B@H@HBDD?D?D?B?D?BDFDBBBBBCBABIBCBCDCBF@D?DGFHHJJNHJALGJYHe@Ji@Pg@Xg@Tg@Zm@b@mABEJi@`@kA`@oALi@Hg@BEBEPQLO\\]N[RUXW\\g@Vg@DILWN_@RWLMZ_@Vg@Vc@NYHc@HQHGVQJGl@_@NKTGNCPB^IP]d@cA^KZm@T{@VwA?K@MBSD[DQLHRTPb@@DLJPTVZT^FLDT@n@N`ARl@TNNFBS?QDOLc@B[@O@O@W@_@BMDKHAF?L?VBJBNBXLN?LAHELIVUPMDCFCH?FBBD@D\\Kn@WZOLGFIBSBe@BYBGDGPKHIDGFQPUb@_@TYPUPYJY@IDQXETWPSBGBGF???BW@EFKBO@E?????A?@LMBCBEBCHKHOJMHQN_@LYLa@Pk@Va@XYX]PWJSFGHKNMLMJSJWDSD[DU@IDGJMHGPIRIRGDEBE@I?[GaAUCMEKCKIOQOQKQIOOYCGCE??GQMW??Ua@_@g@MQIMMA??QCMC]IG?IAEAGCIKGMMSQ]ACACEICEGMUe@Sc@Ue@g@eAUi@EG??KUQ_@??MUOYu@kA]q@_@o@_@o@??????ISCCAAIQCE?@????????????CDGNOZCF???@CB?B??????IL?BA@??AB?@g@fAIR??MVGNMX??INADGNG@EBGDEJE?A???ACAACA??EE??ECA?GEMGOKIKGEEEEGEKK[EKGM?A????CG@?J?F?F?",
+    "latitudeStart": 47.4451,
+    "longitudeStart": 12.38867
+  },
+  {
+    "id": 121300844,
+    "name": "Malern Walk",
+    "pathData": "{rq`HetrjAG?G?K?A?BF?????@FLBD@DBF?B@@@D?@@@@B@B?@BDDF@@@??@@@@@BB@?@B@@@@BBBBDBDBDBFBBBB@@?DB??@@BB??@?@@@@????@B@?@?B?DKFEDCFABGBG@EDGBG??BEBGDKBEBIBEDIBE?A????DIBITg@LYBE?A@C??@A?CBEDG???????CBC?A??BG??N[JU?????ABD??@B?@@@??BD@??B@@@@@@FM@CHQVo@`@cAZy@Pc@N_@JUDMFOFMPc@LYb@iAFE@ABEFMBGHQHUVk@N_@BI@?HUN_@FOPg@HSFMFBN@BMJg@Ha@HYBKLc@Jg@Li@FUJe@Lc@FYLFLDL@`@@ZCb@El@OVIT@H@\\PPLJFJDTDt@PVD^FLD\\LF@??BEFGBIDYBYAIAKEYCIGKN]JOJMt@o@x@o@h@a@ZSXWPO^Wh@]VUp@o@TSPMNKn@SNGHE~@e@^ONEZGTEJCLEb@SPIVQXSNMT[b@u@Te@\\q@L[Nm@J_@Nc@DIFMFMBIBCGg@Mu@?G?ELi@FQ@EPQHKHSPo@F[Di@?O????FENMJEFA`@@LA@A?A@KCi@KsACYKsAGo@?CBABAL?R?PBJ@LDJBLCHCJIGOCIAMCWCOASCCAQCSEKyAp@m@VuAn@a@J??Oy@EQSo@KYSc@GYWiBEWEOm@gAUc@m@aAg@Tk@ZSLEBOHi@XWPUNA@OLSPUT??STWZSVUZEHEHKPKRYn@GNABKRMZGRKXEN??MQMOKSYaAACWc@y@iA_@i@IQCQ?IID[RSJ@JD`@@d@?RARCHEHEHIDOD{@POJQN??BDDPEQ??DPLRJT??FJLRNVPRNR??????@@f@p@Tb@Pb@F^@VAXSD??IZYj@_@d@????U^SVRWT_@????U^k@r@V[WZW\\SPOLOHIBSFUDc@Hq@NOBe@N??E@A@ABADAD?R@D?@BAB?@BDBBBBFBBBDDD@DFF?F?N?JANC?K@CJITGC??I`@Kb@Qp@Od@AJ?B?D?H?N@VBPBPFLZn@N\\FX@P?XATCNGRKPMLQNQPMPGLCFIVKp@?@QjAQz@ERQt@U~@GXMb@Kd@GTI`@CFKf@Mb@CJIXEVCHKf@CLGAG?GCGLIRQf@GNO^O^O^]x@CFIPCFGLCDA@GDc@hAMXQb@GLYr@a@bAKVq@dBWn@IPCDEJCCAA?CA?CE??AA?AAC??CE?@CDABEJSb@CHEFCD?BA@EJMXUf@CHEH?@CDEHGNCDEJCFCDCFEFADCFCFG@EBGDEJC?C?AC??AAAACAAAAA??ECIEGCECECECCCCCAAAAACA?CCAAAA?AA?AAEGCE?AACACAA?AAEAA?CCGAECEGM?ACG@?Z?",
+    "latitudeStart": 47.4451,
+    "longitudeStart": 12.38867
+  },
+  {
+    "id": 121300847,
+    "name": "Schwarzsee Runde",
+    "pathData": "cxs`Hw`njABUAa@C_@@a@DS`@M`@GRC?????????????@HB@@@?@@????TRDB@QBSTqAVaA??f@gBNc@NYP]Vo@Ro@F_@????Rs@Nm@ZcADKZ_APs@XiAP{@Jc@Da@??MOGGEGCCOQAAAA??AAGIIKEEMOGICCAC??A???EGY]GIKO_@_@??gAY????????????OKIQKSOG[KKCc@]OK}@AYMMGg@KKu@Iq@ASEWIOCMKYCSAIEEQBm@XYREFQRQVKP@N_AN??qALMJEFGJWVWXKHID[JODQFIFEFIRMj@IZCL??AF?@AF@J?J@F@H@D@DDH@D@@????f@fAXn@Pb@?B?BAD]t@Uf@e@bAYj@Yn@[dAc@rAOd@IVCHOf@?@A@CFA@CFIPGLGLGLKPKN??S^OX??ADCNGh@CRANAZ@ZB^BLFRLXV`@\\b@FFF@H@NCJOHENK@C@?BE\\]TSh@e@TWLIVQXBHAFAJCB@?FAJEX?F?D@DBJb@vA`@lA@DL`@FHB@@BB?F?DAB?B?D@DAp@MpAS@?HA`@IPCD?D?H?J@j@FD?d@DB@N@P@D?@?D@",
+    "latitudeStart": 47.45618,
+    "longitudeStart": 12.36508
+  },
+  {
+    "id": 121300850,
+    "name": "Steuerberglauf",
+    "pathData": "cxs`Hw`njABUAa@C_@@a@DS`@M`@GRC??LF@@ZV????@QBSTqAVaA??f@gBNc@NY??FIHSVo@Ro@F_@Rs@Nm@ZcADKZ_APs@XiAP{@Jc@Da@??MOGGEGCCOQAAAA??AAGIIKEEMOGICCAC??A???EGY]GIKO_@_@??gAY??????OKIQKSOG[KKCc@]OK}@AYMMGg@KKu@Iq@ASEWIOCMKYCSAIEEQBm@XYREFQRQVKP@N_ANqALMJEFGJWVWXKHID[JODQFIFEFIRMj@IZCLAF?@AF@J?J@F@H@D@DDH@D@@????f@fAXn@Pb@?B?BAD]t@Uf@e@bAYj@Yn@[dAc@rAOd@IVCHOf@?@A@CFA@CFIPGLGLGLKPKNS^OXADIGKQCKEWEO??CKCMKUm@LMHOLC@??A@????UP??OLIHC@EFGDQLABC@A@CDA?A@?KDa@Fq@B_@AMAUEM??ESMk@Ig@E_@C]A[Ag@A]Gm@Fl@@\\@f@@ZB\\C]A[Ag@A]Gm@Ea@I[GG?G?EAIAMIWOi@Ka@EUAY?UBm@Bo@@O@ODYFm@De@D]BW?Y?OAKAQCQG]Ki@EUAO?K?K@[@a@@m@Cg@??ACAGWc@MWEICKCOAW?W???_@??NBF@D?D?FCFEEKCKOe@Us@AK?I?MBSD_@BWBO@[GyASk@[g@??a@kB??Cg@??Ba@Bw@@QBU@G@QEWCGKIMGIIISMUCEIMMCEAMDSJSJG@KB{@Ja@BMEQEA?C?E?E?I?GASCGEK?G?I?G?G?G?GAG?G?G@G?C?G?C@C@CDCBCBAD?DDDB@B@B@F@B?B?BBCDC?EBCBC@ABEDEDCBA@EHCH?FD@F@D?BAF?B@B@BB??B?B?BAB@B@DBADADAFCDCHCBEBCBCB?H@H?H?FAB?D@FCFC@AFADABC@ECE?E@E?C?E?C?C?E?E?C?E?yA\\k@RYN[JMBMF[P]NMF_@NG@SG_@OWOSFCHITGREPALAJAB_@EIAM@I@GDQLKFOFWFg@Lm@JMDWF]Jc@Ju@Fm@Hk@Nw@Vk@JWN[Ta@^??eAxB[l@S`@GDO?QCOAMDOP??QTUv@Oz@K|@Or@Mp@Ef@C`@EZERGNMZGHMHOBOBWAOAWMMGIGOCM@QB??MDGDEHCTAV?L@LBRLZJT^`@VXZb@??h@p@NRPRPNJHRL`@XPNNJJHRR`@h@\\f@NPFFTLXRf@\\j@d@f@\\HHBBDFBHBLDb@Dr@NGHCFAD?H?`@@b@A@Z@VCPANGN_@h@MNIPGNGROl@??a@~Ak@zAYv@GLGLCHCL?J?H?DBJBD@H@DBJ@H@N@T?\\???DBB@@B?@D?j@??WHIDC@CBEBEFEDEJENIBO@AFEJEL??EJCLAP?TBPJb@X|@BNDRBNF\\Hf@Bb@BZ@`@B~@@VBRBNFVDJFNLNDHLj@Jf@JZLXJPJLRTRRHHHDJHPLPHJJHLHRBJ@F@D?DBHBJ@LBR@P@^?JBH@JBP@DHTFLDHFJHNNTJRP^N^L\\Pb@HNFHHFJHHDn@VZLv@XVJJFNH\\ZHDLDLBH@J?F?J@F@JDLFJJFJHNP\\FLDJFFLLLHLFRJNBJ@J?FARCFCD@B@@D?D@HAFCHCBKNc@d@EHCDCPANEXCZAN?JDJZVNNHFHHDHTvARhA^xARr@Rp@HT|@{@????NGXOBA^ORGRG@P@HBF??DLFPFPLZHPFVHTDLFLHJHHNLNLVPPJPH^LZJXFNHLHJHNLHHHNFLDLDH@LFGBEBIBMBQDUDUL]FWDQJg@Hi@BOFc@Ng@Rq@Rm@Pm@Lk@PiA@K?IAMCQCMG]Mk@??`@_@`@a@HIZ]Z]D@B?DCJIHKTYVYX]JM?DBDB@@?B?@ABC??RYb@m@Ze@Za@V[ROr@q@b@_@\\]f@e@LOFIDIJ]FMFIn@q@`@a@b@a@VULM??NMTOFGDE@EBQ@S@G@G???I@K@E?E@E?C?C@G@E@E@G@EBK@G?A?C??@E?A@GBI?C@IBK@KBG@E@MBKBMBMDI?C@CBIBUBS@C@IB[NsAJk@N_AZ}ATgATcABMPs@@EBMAKAGIIQMFKHW@C??BIBKASFOL[Pk@Lk@Ly@D[@]?[AWGQ",
+    "latitudeStart": 47.45618,
+    "longitudeStart": 12.36508
+  }
 ]
 
 const VISITOR_PATTERNS = [
@@ -51,7 +110,6 @@ const VISITOR_PATTERNS = [
 ]
 
 const DEFAULTS = {
-  nodeCount: 5,
   days: 30,
   slotMinutes: 5,
   maxVisitorsPerSlot: 15,
@@ -84,18 +142,24 @@ async function main() {
   const startArg = typeof args.start === 'string' ? args.start : undefined
   const startTime = getStartTime(startArg, config.days, config.slotMinutes)
   const dayWeather = buildDayWeather(config.days)
-  const nodeProfiles = buildNodeProfiles(config.nodeCount)
+  const nodeProfiles = buildNodeProfiles()
 
   await writeChunk('-- Auto-generated demo dataset.\n')
   await writeChunk(`-- Generated at ${new Date().toISOString()}\n`)
   await writeChunk('-- Adjust parameters via generateDemoData.mjs CLI flags.\n\n')
+  await writeChunk('BEGIN TRANSACTION;\n')
   await writeChunk('PRAGMA foreign_keys = OFF;\n')
   await writeChunk('DELETE FROM activities;\nDELETE FROM nodes;\n')
 
-  await writeChunk('\nINSERT OR IGNORE INTO trails (id, name, path_data) VALUES\n')
+  await writeChunk('\nINSERT OR IGNORE INTO trails (id, name, path_data, latitude_start, longitude_start) VALUES\n')
   for (let i = 0; i < TRAILS.length; i++) {
+    const trail = TRAILS[i]
     const suffix = i === TRAILS.length - 1 ? ';\n\n' : ',\n'
-    await writeChunk(`  (${TRAILS[i].id}, '${TRAILS[i].name.replace(/'/g, "''")}', NULL)${suffix}`)
+    const name = escapeSqlString(trail.name)
+    const pathData = trail.pathData !== undefined ? `'${escapeSqlString(trail.pathData)}'` : 'NULL'
+    const latitude = formatNullableNumber(trail.latitudeStart)
+    const longitude = formatNullableNumber(trail.longitudeStart)
+    await writeChunk(`  (${trail.id}, '${name}', ${pathData}, ${latitude}, ${longitude})${suffix}`)
   }
 
   await writeNodes(writeChunk, nodeProfiles)
@@ -108,7 +172,7 @@ async function main() {
     slotDurationMs,
   })
 
-  await writeChunk('PRAGMA foreign_keys = ON;\n')
+  await writeChunk('PRAGMA foreign_keys = ON;\nCOMMIT;\n')
 
   await new Promise((resolve, reject) => {
     writer.end(() => resolve())
@@ -151,6 +215,9 @@ async function writeActivities(writeChunk, context) {
   }
 
   for (const node of nodeProfiles) {
+    if (node.id === 1) {
+      continue
+    }
     for (let slotIndex = 0; slotIndex < totalSlots; slotIndex++) {
       const slotTime = new Date(startTime.getTime() + slotIndex * slotDurationMs)
       const dayIndex = Math.floor(slotIndex / slotsPerDay)
@@ -285,7 +352,8 @@ function buildDayWeather(days) {
   return patterns
 }
 
-function buildNodeProfiles(count) {
+function buildNodeProfiles() {
+  const count = TRAILS.length
   const nodes = []
   const busySlice = Math.max(1, Math.floor(count / 3))
   const calmSlice = Math.max(1, Math.floor(count / 4))
@@ -293,6 +361,7 @@ function buildNodeProfiles(count) {
 
   for (let i = 0; i < count; i++) {
     const pattern = clonePattern(VISITOR_PATTERNS[i % VISITOR_PATTERNS.length])
+    const trail = TRAILS[i]
     const categoryMultiplier =
       i >= count - busySlice
         ? config.busyFactor
@@ -304,7 +373,7 @@ function buildNodeProfiles(count) {
 
     nodes.push({
       id: i + 1,
-      trailId: TRAILS[i % TRAILS.length].id,
+      trailId: trail.id,
       status: statusPlan[i] ?? 'healthy',
       ratio: clamp(trafficMultiplier, 0.5, 1.5),
       battery: clamp(randomRange(0.55, 0.95), 0.3, 1),
@@ -396,7 +465,6 @@ function alignToSlot(date, slotMinutes) {
 
 function buildConfig(args) {
   return {
-    nodeCount: Math.max(1, parseIntArg(args.nodes, DEFAULTS.nodeCount)),
     days: Math.max(1, parseIntArg(args.days, DEFAULTS.days)),
     slotMinutes: Math.max(1, parseIntArg(args['slot-minutes'], DEFAULTS.slotMinutes)),
     maxVisitorsPerSlot: Math.max(1, parseIntArg(args['max-visitors'], DEFAULTS.maxVisitorsPerSlot)),
@@ -468,6 +536,17 @@ function randomNormal(mean, stdDev) {
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value))
+}
+
+function escapeSqlString(value = '') {
+  return String(value).replace(/'/g, "''")
+}
+
+function formatNullableNumber(value) {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return Number(value).toFixed(6)
+  }
+  return 'NULL'
 }
 
 function formatDateTime(date) {
