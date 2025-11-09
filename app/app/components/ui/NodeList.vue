@@ -18,7 +18,7 @@ defineProps({
     >
     <div class="w-full flex justify-between items-center gap-1">
         <span class="font-semibold text-gray-800">Trailname</span>
-        <span class="text-sm text-gray-800">{{ node.activations || 0 }} current activations</span>
+        <span class="text-sm text-gray-800">{{ node.activationsToday || 0 }} current activations</span>
     </div>
     <div class="w-full flex justify-between items-center">
         <ui-status class="w-fit" :status="node.status" />
