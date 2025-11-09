@@ -1,4 +1,5 @@
 import { blob, integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import {sql} from "drizzle-orm";
 
 export const locations = sqliteTable('locations', {
   id: integer('id').primaryKey(),
@@ -21,12 +22,12 @@ export const trails = sqliteTable('trails', {
 
 export const activities = sqliteTable('activities', {
   id: integer('id').primaryKey(),
-  nodeId: integer('node_id').references(() => nodes.id, { onDelete: 'cascade' }),
+  nodeId: integer('node_id').references(() => nodes.id, { onDelete: 'cascade' }).notNull(),
   ble: integer('ble'),
   wifi: integer('wifi'),
   temperature: real('temperature'),
   humidity: real('humidity'),
-  createdAt: text('created_at')
+  createdAt: text('created_at').default(sql`(current_timestamp)`).notNull()
 })
 
 export type Location = typeof locations.$inferSelect
