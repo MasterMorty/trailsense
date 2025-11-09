@@ -58,9 +58,7 @@ class BleDeviceResultHandler : public NimBLEAdvertisedDeviceCallbacks
     if (macAddress.length() < 2)
       return;
 
-    // Filter random MAC addresses (IEEE 802-2014: the locally administered bit is bit 1 of the first octet,
-    // which is the second least significant bit. In the MAC string, this is the second hex digit of the first octet:
-    // hex chars '2', '6', 'a', 'e' (0010, 0110, 1010, 1110) have this bit set.
+    // Filter random MAC addresses (check README for explanation)
     char secondChar = tolower(macAddress[1]);
     if (secondChar == '2' || secondChar == '6' || secondChar == 'a' || secondChar == 'e')
       bleRandomMacCount++;
@@ -233,17 +231,17 @@ void uploadData(int bleDeviceCount, int wifiDeviceCount, float avgTemperature, f
 
     if (httpCode == 200 || httpCode == 201)
     {
-      Serial.printf("✓ Upload successful (HTTP %d): %s\n", httpCode, http.getString().c_str());
+      Serial.printf("Upload successful (HTTP %d): %s\n", httpCode, http.getString().c_str());
       http.end();
       return;
     }
     else if (httpCode > 0)
     {
-      Serial.printf("✗ Upload failed (HTTP %d): %s\n", httpCode, http.getString().c_str());
+      Serial.printf("Upload failed (HTTP %d): %s\n", httpCode, http.getString().c_str());
     }
     else
     {
-      Serial.printf("✗ Upload failed: %s\n", http.errorToString(httpCode).c_str());
+      Serial.printf("Upload failed: %s\n", http.errorToString(httpCode).c_str());
     }
 
     http.end();
@@ -256,7 +254,7 @@ void uploadData(int bleDeviceCount, int wifiDeviceCount, float avgTemperature, f
     }
   }
 
-  Serial.println("✗ Upload failed after all retries");
+  Serial.println("Upload failed after all retries");
 }
 
 // Main Program
