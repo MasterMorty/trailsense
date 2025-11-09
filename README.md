@@ -1,4 +1,4 @@
-<img src="./docs/hero.png" alt="logo" />
+<img src="./docs/github_banner.png" alt="logo" />
 
 # TrailSense
 
