@@ -74,15 +74,22 @@ int scanBLE(unsigned durationSeconds)
 {
   if (WiFi.status() == WL_CONNECTED)
   {
-    WiFi.disconnect(true);
+    WiFi.disconnect(true, true);
     delay(WIFI_STOP_DELAY_MS);
   }
-  WiFi.mode(WIFI_OFF);
-  delay(WIFI_STOP_DELAY_MS);
+
   esp_wifi_stop();
+  delay(WIFI_STOP_DELAY_MS);
+
+  WiFi.mode(WIFI_OFF);
   delay(WIFI_START_DELAY_MS);
 
+  esp_wifi_deinit();
+  delay(300);
+
   NimBLEDevice::init("");
+  delay(100);
+
   NimBLEScan *pScan = NimBLEDevice::getScan();
 
   pScan->setAdvertisedDeviceCallbacks(new BleDeviceResultHandler());
@@ -91,7 +98,6 @@ int scanBLE(unsigned durationSeconds)
   pScan->setWindow(BLE_SCAN_WINDOW);
 
   pScan->start(durationSeconds, false);
-  pScan->stop();
 
   NimBLEDevice::deinit(true);
   delay(BLE_DEINIT_DELAY_MS);
@@ -115,8 +121,13 @@ void wifiSnifferPacketHandler(void *buf, wifi_promiscuous_pkt_type_t type)
 
 int sniffWiFi(unsigned durationSeconds)
 {
+  wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+  esp_wifi_init(&cfg);
+  delay(100);
+
   esp_wifi_start();
   delay(WIFI_STOP_DELAY_MS);
+
   WiFi.mode(WIFI_MODE_STA);
   delay(WIFI_START_DELAY_MS);
 
@@ -189,10 +200,6 @@ void uploadData(int bleDeviceCount, int wifiDeviceCount, float avgTemperature, f
     return;
   }
 
-  HTTPClient http;
-  http.begin(SERVER_URL_STR);
-  http.addHeader("Content-Type", "application/json");
-
   String jsonPayload = "{\"ble\":" + String(bleDeviceCount) +
                        ",\"wifi\":" + String(wifiDeviceCount) +
                        ",\"temperature\":" + String(avgTemperature, 1) +
@@ -200,16 +207,44 @@ void uploadData(int bleDeviceCount, int wifiDeviceCount, float avgTemperature, f
 
   Serial.printf("Uploading data: %s\n", jsonPayload.c_str());
 
-  int httpCode = http.POST(jsonPayload);
-  if (httpCode > 0)
+  const int maxRetries = 3;
+  const int retryDelays[] = {1000, 2000, 5000};
+
+  for (int attempt = 0; attempt < maxRetries; attempt++)
   {
-    Serial.printf("HTTP Response %d: %s\n", httpCode, http.getString().c_str());
+    HTTPClient http;
+    http.begin(SERVER_URL_STR);
+    http.addHeader("Content-Type", "application/json");
+    http.setTimeout(10000);
+
+    int httpCode = http.POST(jsonPayload);
+
+    if (httpCode == 200 || httpCode == 201)
+    {
+      Serial.printf("✓ Upload successful (HTTP %d): %s\n", httpCode, http.getString().c_str());
+      http.end();
+      return;
+    }
+    else if (httpCode > 0)
+    {
+      Serial.printf("✗ Upload failed (HTTP %d): %s\n", httpCode, http.getString().c_str());
+    }
+    else
+    {
+      Serial.printf("✗ Upload failed: %s\n", http.errorToString(httpCode).c_str());
+    }
+
+    http.end();
+
+    if (attempt < maxRetries - 1)
+    {
+      Serial.printf("Retrying in %dms... (attempt %d/%d)\n",
+                    retryDelays[attempt], attempt + 2, maxRetries);
+      delay(retryDelays[attempt]);
+    }
   }
-  else
-  {
-    Serial.printf("HTTP POST failed: %s\n", http.errorToString(httpCode).c_str());
-  }
-  http.end();
+
+  Serial.println("✗ Upload failed after all retries");
 }
 
 // Main Program
