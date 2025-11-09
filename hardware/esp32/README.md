@@ -26,6 +26,14 @@ wifi_pass = your_wifi_password
 server_url = http://your.server.url/endpoint
 ```
 
+## Info
+
+### Randomized MAC Addresses
+
+To improve accuracy, the ESP32 counts only randomized MAC addresses. Most modern devices use a randomized MAC when broadcasting Bluetooth Low Energy (BLE) signals. You can spot these by checking the second hexadecimal digit of the first octet in the address. If that digit is 2, 6, A, or E, the “locally administered” bit is set, meaning the MAC address is randomized rather than factory-assigned.
+
+In short: when the second character of a MAC address is 2, 6, A, or E, it’s a randomized address.
+
 ## Image
 
 ![TrailSense Hardware](/docs/hardware.jpeg)
