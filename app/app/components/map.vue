@@ -123,7 +123,7 @@ function updateSegments(segments: any[]) {
       properties: {
         id: segment.id,
         name: segment.name,
-        color: `rgba(255,0,0,${visible ? 0.6 : 0})`,
+        color: `rgba(255,0,0,${visible ? 0.5 : 0})`,
       }
     };
   });
