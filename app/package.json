@@ -18,7 +18,6 @@
   "dependencies": {
     "@mapbox/polyline": "^1.2.1",
     "@nuxtjs/tailwindcss": "^7.0.0-beta.1",
-    "@sidebase/nuxt-auth": "^1.1.0",
     "@vueuse/core": "^14.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
