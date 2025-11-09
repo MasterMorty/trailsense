@@ -2,9 +2,11 @@
 import { ref, computed } from "vue";
 import { motion } from "motion-v";
 import { useFetch } from "@vueuse/core";
-import NodeList from "./NodeList.vue";
+import type { Node } from "~~/shared/db/schema";
 
 const activeView = ref(0);
+const selectedNode = ref<Node | null>(null);
+const showFilter = ref(true);
 
 const { data } = useFetch("/api/nodes").json();
 
@@ -47,9 +49,27 @@ const filteredData = computed(() => {
   });
 });
 
+const sortBy = computed(() => {
+  switch (activeView.value) {
+    case 0:
+      return "all";
+    case 1:
+      return "most-popular";
+    case 2:
+      return "least-popular";
+    default:
+      return "all";
+  }
+});
+
 const setActiveView = (index: number) => {
   activeView.value = index;
   selectedFilter.value = { include: true, data: [] };
+};
+
+const selectNode = (node: Node) => {
+  selectedNode.value = node;
+  showFilter.value = false;
 };
 </script>
 
@@ -94,29 +114,66 @@ const setActiveView = (index: number) => {
             </button>
           </div>
 
-          <div class="relative z-20 w-full flex justify-between items-center px-5 mb-3 mt-6">
+          <motion.div
+            class="relative z-20 w-full flex justify-between items-center px-5 mb-3 mt-6"
+            :animate="{
+              maxHeight: !showFilter ? '0px' : '32px',
+              opacity: !showFilter ? '0' : '1',
+            }"
+            :transition="{
+              visualDuration: 0.4,
+            }"
+          >
             <span class="text-black/70 text-xs">
               {{ data?.length || 0 }} active Sensors
             </span>
             <ui-select v-model="selectedFilter" :options="filterOptions" />
-          </div>
+          </motion.div>
 
           <ui-switcher v-model="activeView" class="relative z-0">
             <template #0="{ isActive }">
+              <ui-switcher>
+                <template #0="{ isActive, navigateForward }">
+                  <div class="mx-4">
+                    <ui-node-list
+                      :nodes="filteredData || []"
+                      :sort-by="sortBy"
+                      :navigate-forward="navigateForward"
+                      @select-node="(node) => selectNode(node)"
+                    />
+                  </div>
+                </template>
+                <template #1="{ isActive, navigateBack }">
+                  <div class="mx-4">
+                    <ui-node
+                      v-if="selectedNode"
+                      :node="selectedNode"
+                      :navigateBack="navigateBack"
+                      @exit="selectedNode = null"
+                      @exit-animation="showFilter = true"
+                    />
+                  </div>
+                </template>
+              </ui-switcher>
+            </template>
+
+            <template #1="{ isActive, navigateForward }">
               <div class="mx-4">
-                <NodeList :nodes="filteredData || []" />
+                <ui-node-list
+                  :nodes="filteredData || []"
+                  :sort-by="sortBy"
+                  :navigate-forward="navigateForward"
+                />
               </div>
             </template>
 
-            <template #1="{ isActive }">
+            <template #2="{ isActive, navigateForward }">
               <div class="mx-4">
-                <NodeList :nodes="filteredData || []" />
-              </div>
-            </template>
-
-            <template #2="{ isActive }">
-              <div class="mx-4">
-                <NodeList :nodes="filteredData || []" />
+                <ui-node-list
+                  :nodes="filteredData || []"
+                  :sort-by="sortBy"
+                  :navigate-forward="navigateForward"
+                />
               </div>
             </template>
           </ui-switcher>
