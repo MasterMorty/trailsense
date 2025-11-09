@@ -3,14 +3,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import {ref, onMounted, onBeforeUnmount} from 'vue'
 
-import type { Map } from 'maplibre-gl'
+import type {Map} from 'maplibre-gl'
 
 import 'maplibre-gl/dist/maplibre-gl.css'
 import mapStyle from '~/assets/map/style.json'
+import polyline from '@mapbox/polyline'
+import type {Feature, FeatureCollection, LineString} from 'geojson'
 
-const center = { lat: 47.2689, lng: 11.3936 }
+const center = {lat: 47.2689, lng: 11.3936}
 const zoom = 8
 
 const mapContainer = ref<HTMLElement | null>(null)
@@ -47,6 +49,28 @@ onMounted(async () => {
         })
 
         resizeObserver.observe(mapEl)
+
+        map.addSource('strava-segments', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: []
+          }
+        });
+        map.addLayer({
+          id: 'strava-segments-layer',
+          type: 'line',
+          source: 'strava-segments',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#ff0000',
+            'line-width': 3,
+            'line-opacity': 0.8
+          }
+        });
       })
 
     } catch (e) {
@@ -79,7 +103,42 @@ function getCurrentBounds(): number[] | null {
   return null;
 }
 
+function updateSegments(segments: any[]) {
+  if (!mapInstance.value) return;
+
+  const features: Feature<LineString>[] = segments.map(segment => {
+    const decodedCoords = polyline.decode(segment.points);
+
+    const geoJsonCoords = decodedCoords.map(coord => [coord[1], coord[0]]);
+
+    return {
+      type: 'Feature',
+      geometry: {
+        type: 'LineString',
+        coordinates: geoJsonCoords
+      },
+      properties: {
+        id: segment.id,
+        name: segment.name,
+        // color: segment.color,
+      }
+    };
+  });
+
+  const geoJsonData: FeatureCollection = {
+    type: 'FeatureCollection',
+    features: features
+  };
+
+  const source = mapInstance.value.getSource('strava-segments');
+  if (source && source.type === 'geojson') {
+    // @ts-ignore
+    source.setData(geoJsonData);
+  }
+}
+
 defineExpose({
-  getCurrentBounds
+  getCurrentBounds,
+  updateSegments,
 });
 </script>

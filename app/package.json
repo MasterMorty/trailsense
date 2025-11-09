@@ -15,6 +15,7 @@
     "apply-seeds:prod": "npx wrangler d1 execute --remote DB --file=./db/seeds/demo.sql"
   },
   "dependencies": {
+    "@mapbox/polyline": "^1.2.1",
     "@nuxtjs/tailwindcss": "^7.0.0-beta.1",
     "@sidebase/nuxt-auth": "^1.1.0",
     "@vueuse/core": "^14.0.0",
@@ -36,6 +37,7 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@types/mapbox__polyline": "^1.0.5",
     "@types/node": "^24.10.0",
     "drizzle-kit": "^0.31.6",
     "nitro-cloudflare-dev": "^0.2.2",
