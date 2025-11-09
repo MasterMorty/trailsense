@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
     const payload: NodesListResponse = nodesResult.map((node) => {
         const ratio = normalizeRatio(node.ratio);
         const rawValue = activationMap.get(node.id) ?? 0;
-        const activationsToday = Math.trunc(rawValue / ratio);
+        const activationsToday = Math.trunc(rawValue * ratio);
         return {
             ...node,
             activationsToday,

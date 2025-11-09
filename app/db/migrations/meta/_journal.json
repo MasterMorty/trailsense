@@ -29,6 +29,13 @@
       "when": 1762656594515,
       "tag": "0003_balanced_ratio_column",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1762661185920,
+      "tag": "0004_battery_status_column",
+      "breakpoints": true
     }
   ]
 }

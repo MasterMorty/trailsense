@@ -208,7 +208,7 @@ function buildSummariesFromAggregates({
         const bucketStart = new Date(rangeStartMs + index * bucketDurationMs);
         const bucketEnd = new Date(bucketStart.getTime() + bucketDurationMs);
         const bucketData = bucketMap.get(index);
-        const activationAdjusted = (bucketData?.activationSum ?? 0) / ratio;
+        const activationAdjusted = (bucketData?.activationSum ?? 0) * ratio;
         const activations = Math.trunc(activationAdjusted);
         const temperature = bucketData && bucketData.temperatureSamples > 0 && typeof bucketData.temperatureAvg === 'number'
             ? roundToSingleDecimal(bucketData.temperatureAvg)

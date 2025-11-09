@@ -11,7 +11,8 @@ export const nodes = sqliteTable('nodes', {
   id: integer('id').primaryKey(),
   locationId: integer('location_id').references(() => locations.id, { onDelete: 'set null' }),
   status: text('status').notNull(),
-  ratio: real('ratio').notNull().default(1)
+  ratio: real('ratio').notNull().default(1),
+  battery: real('battery').notNull().default(0.75)
 })
 
 export const trails = sqliteTable('trails', {
