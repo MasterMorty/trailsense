@@ -27,6 +27,7 @@ export default defineNuxtConfig({
   },
   ssr: false,
   auth: {
-    globalAppMiddleware: false
+    globalAppMiddleware: false,
+    baseURL: process.env.AUTH_ORIGIN
   }
 })
