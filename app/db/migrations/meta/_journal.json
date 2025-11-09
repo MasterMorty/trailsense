@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1762643436053,
-      "tag": "0000_nostalgic_marvel_boy",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1762647387509,
-      "tag": "0001_crazy_patch",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1762647614062,
-      "tag": "0002_fearless_roxanne_simpson",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1762656594515,
-      "tag": "0003_balanced_ratio_column",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1762661185920,
-      "tag": "0004_battery_status_column",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "6",
-      "when": 1762679999000,
-      "tag": "0005_nodes_trail_mapping",
+      "when": 1762672678148,
+      "tag": "0000_needy_karen_page",
       "breakpoints": true
     }
   ]

@@ -1,1 +1,0 @@
-ALTER TABLE `nodes` ADD COLUMN `battery` real DEFAULT 0.75 NOT NULL;

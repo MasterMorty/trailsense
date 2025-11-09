@@ -96,7 +96,7 @@ export const workWorkWork = async (db: DrizzleD1Database) => {
 
     processingStream.on('data', async ({value: trail}) => {
       try {
-        const trailId = trail.global_id || crypto.randomUUID();
+        const trailId = crypto.randomUUID();
         if (!trailId) {
           console.warn(`Skipping entry due to missing ID: ${JSON.stringify(trail).substring(0, 50)}...`);
           return;
