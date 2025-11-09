@@ -1,5 +1,5 @@
 <template>
-  <button class="z-10 w-32 h-fit fixed" @click="fetchSegments">Search in area</button>
+  <button class="z-10 h-fit fixed right-4 top-4 px-3 py-1.5 bg-white rounded-lg text-sm" @click="fetchSegments">Search in area</button>
   <Map ref="mapRef"/>
 </template>
 

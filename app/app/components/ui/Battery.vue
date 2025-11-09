@@ -10,7 +10,7 @@ defineProps({
 
 <template>
     <div class="flex items-center gap-px">
-        <span class="text-xs text-black/80 mr-1">{{ level }}%</span>
+        <span class="text-xs text-black/80 mr-1">{{ Math.floor(level) }}%</span>
         <div class="w-8 h-4 bg-transparent rounded-[4.5px] border-[1.5px] p-px flex items-center">
           <div
             class="h-full bg-green-500/90 rounded-[2.5px] transition-all ease-in-out"

@@ -76,18 +76,11 @@ const formatBucketLabel = (bucket: any, viewIndex: number) => {
   const start = new Date(bucket.start);
 
   if (viewIndex === 0) {
-    return start.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
+    return start.getHours().toString().padStart(2, '0');
   } else if (viewIndex === 1) {
     return start.toLocaleDateString("en-US", { weekday: "short" });
   } else {
-    return start.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-    });
+    return start.getDate().toString();
   }
 };
 
@@ -160,7 +153,7 @@ const exit = () => {
 
     <!-- Date Picker -->
     <div
-      class="mt-12 p-2 bg-white rounded-2xl drop-shadow-[0_0px_10px_rgba(0,0,0,0.10)]"
+      class="mt-6 p-2 bg-white rounded-2xl drop-shadow-[0_0px_10px_rgba(0,0,0,0.10)]"
     >
       <!-- TabGroub -->
       <div
@@ -194,7 +187,7 @@ const exit = () => {
       </div>
 
       <!-- Date Picker Content -->
-      <div class="w-full flex items-center justify-between mt-6">
+      <div class="w-full flex items-center justify-between mt-4">
         <UiDatePicker v-model="selectedDate" />
         <div class="pr-2 text-right text-sm">
           {{ formatDate(selectedDate) }}
@@ -214,13 +207,13 @@ const exit = () => {
           <!-- Data Buckets -->
           <div class="mt-4 relative">
             <!-- Chart Container -->
-            <div class="h-32 relative flex items-end justify-between gap-1 px-4 border-b border-gray-200">
+            <div class="h-28 relative flex items-end justify-between gap-1 px-4 border-b border-gray-200">
               <div
                 v-for="(bucket, index) in activityData.data"
                 :key="index"
                 class="flex-1 bg-gray-300 hover:bg-[#6EE7B7] rounded-t transition-all cursor-pointer relative group"
                 :style="{ 
-                  height: `${Math.max((bucket.activations / (activityData.totals?.activations || 1)) * 100, 2)}%`,
+                  height: `${Math.max((bucket.activations / (activityData.totals?.activations || 1)) * 300, 2)}%`,
                   minHeight: '0px'
                 }"
               >
@@ -259,21 +252,21 @@ const exit = () => {
           Temperature
         </h3>
 
-        <div v-if="temperatureData">
+        <div v-if="activityData">
           <!-- Summary Stats -->
-          <p class="text-xs text-black/60 mb-1">Average today: {{ temperatureAverage }} °C</p>
+          <p class="text-xs text-black/60 mb-1">Average today: <span class="text-[10px]">{{ temperatureAverage }} °C</span></p>
 
           <!-- Data Buckets -->
           <div class="mt-4 relative">
             <!-- Chart Container -->
-            <div class="h-32 relative px-4 pb-8">
+            <div class="h-20 relative px-4 pb-8">
               <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <!-- Line path -->
                 <polyline
-                  :points="temperatureData.data.map((bucket: any, index: number) => {
-                    const x = (index / (temperatureData.data.length - 1)) * 100;
-                    const minTemp = Math.min(...temperatureData.data.map((b: any) => b.temperature || 0));
-                    const maxTemp = Math.max(...temperatureData.data.map((b: any) => b.temperature || 0));
+                  :points="activityData.data.map((bucket: any, index: number) => {
+                    const x = (index / (activityData.data.length - 1)) * 100;
+                    const minTemp = Math.min(...activityData.data.map((b: any) => b.temperature || 0));
+                    const maxTemp = Math.max(...activityData.data.map((b: any) => b.temperature || 0));
                     const range = maxTemp - minTemp || 1;
                     const y = 100 - ((bucket.temperature - minTemp) / range) * 80 - 10;
                     return `${x},${y}`;
@@ -283,31 +276,13 @@ const exit = () => {
                   stroke-width="2"
                   vector-effect="non-scaling-stroke"
                 />
-                <!-- Data points -->
-                <circle
-                  v-for="(bucket, index) in temperatureData.data"
-                  :key="index"
-                  :cx="(index / (temperatureData.data.length - 1)) * 100"
-                  :cy="(() => {
-                    const minTemp = Math.min(...temperatureData.data.map((b: any) => b.temperature || 0));
-                    const maxTemp = Math.max(...temperatureData.data.map((b: any) => b.temperature || 0));
-                    const range = maxTemp - minTemp || 1;
-                    return 100 - ((bucket.temperature - minTemp) / range) * 80 - 10;
-                  })()"
-                  r="3"
-                  fill="#F59E0B"
-                  vector-effect="non-scaling-stroke"
-                  class="hover:r-4 cursor-pointer transition-all"
-                >
-                  <title>{{ formatBucketLabel(bucket, activeView) }}: {{ bucket.temperature }}°C</title>
-                </circle>
               </svg>
             </div>
             
             <!-- Time Labels -->
             <div class="flex justify-between px-4 mt-2 text-xs text-gray-500">
               <span
-                v-for="(bucket, index) in temperatureData.data"
+                v-for="(bucket, index) in activityData.data"
                 :key="index"
                 v-show="activeView === 0 ? index % 3 === 0 : activeView === 1 ? true : index % 3 === 0"
                 class="text-center"
@@ -321,7 +296,7 @@ const exit = () => {
           </div>
         </div>
 
-        <div v-else class="text-black/60">{{temperatureAverage}}</div>
+        <div v-else class="text-black/60">Loading temperature data...</div>
       </div>
     </div>
   </div>
