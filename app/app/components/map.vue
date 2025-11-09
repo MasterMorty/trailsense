@@ -67,4 +67,19 @@ onBeforeUnmount(() => {
     mapInstance.value.remove()
   }
 })
+
+function getCurrentBounds(): number[] | null {
+  if (mapInstance.value) {
+    const mapBounds = mapInstance.value.getBounds();
+    const sw = mapBounds.getSouthWest();
+    const ne = mapBounds.getNorthEast();
+
+    return [sw.lat, sw.lng, ne.lat, ne.lng];
+  }
+  return null;
+}
+
+defineExpose({
+  getCurrentBounds
+});
 </script>
