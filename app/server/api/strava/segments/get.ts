@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // @ts-ignore
-  const stravaAccessToken = session.accessToken
+  const stravaAccessToken = session.accessToken as string
 
   if (!stravaAccessToken) {
     throw createError({statusCode: 401, statusMessage: 'No Strava token in session'})
@@ -24,14 +24,10 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    strava.config({
-      access_token: stravaAccessToken,
-      client_id: process.env.AUTH_STRAVA_CLIENT_ID as string,
-      client_secret: process.env.AUTH_STRAVA_CLIENT_SECRET as string,
-      redirect_uri: ""
-    })
+    // @ts-ignore
+    const stravaClient = new strava.client(stravaAccessToken);
 
-    return await strava.segments.explore({
+    return await stravaClient.segments.explore({
       bounds: bounds,
       activity_type: activity_type
     })
