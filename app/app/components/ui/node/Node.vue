@@ -126,30 +126,7 @@ const exit = () => {
       <ui-status :status="node.status" />
     </div>
 
-    <!-- Battery -->
-    <div class="grid grid-cols-2 gap-4 mx-2 mt-10">
-      <div
-        class="drop-shadow-[0_0px_10px_rgba(0,0,0,0.10)] p-4 bg-white rounded-2xl flex justify-center"
-      >
-        <div>
-          <h3 class="font-semibold text-black/80 mb-3">Battery State</h3>
-          <ui-battery
-            class="scale-150 translate-x-6"
-            :level="node.battery * 100"
-          />
-        </div>
-      </div>
-      <div
-        class="drop-shadow-[0_0px_10px_rgba(0,0,0,0.10)] p-4 bg-white rounded-2xl flex justify-center"
-      >
-        <div>
-          <h3 class="font-semibold text-black/80 mb-2">Active Since</h3>
-          <p class="text-md text-black/60">
-            {{ node.activeSince || "21. July 2025" }}
-          </p>
-        </div>
-      </div>
-    </div>
+
 
     <!-- Date Picker -->
     <div
@@ -297,6 +274,30 @@ const exit = () => {
         </div>
 
         <div v-else class="text-black/60">Loading temperature data...</div>
+      </div>
+    </div>
+    <!-- Battery -->
+    <div class="grid grid-cols-2 gap-4 mt-4">
+      <div
+          class="drop-shadow-[0_0px_10px_rgba(0,0,0,0.10)] p-4 bg-white rounded-2xl flex justify-center"
+      >
+        <div>
+          <h3 class="font-semibold text-black/80 mb-3">Battery State</h3>
+          <ui-battery
+              class="scale-150 translate-x-6"
+              :level="node.battery * 100"
+          />
+        </div>
+      </div>
+      <div
+          class="drop-shadow-[0_0px_10px_rgba(0,0,0,0.10)] p-4 bg-white rounded-2xl flex justify-center"
+      >
+        <div>
+          <h3 class="font-semibold text-black/80 mb-2">Active Since</h3>
+          <p class="text-md text-black/60">
+            {{ node.activeSince || "21. July 2025" }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
