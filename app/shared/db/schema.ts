@@ -2,9 +2,11 @@ import { blob, integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import {sql} from "drizzle-orm";
 
 export const trails = sqliteTable('trails', {
-  id: integer('id').primaryKey(),
+  id: text('id').primaryKey(),
   name: text('name').notNull(),
-  pathData: blob('path_data')
+  pathData: blob('path_data'),
+  latitudeStart: real('latitude_start'),
+  longitudeStart: real('longitude_start')
 })
 
 export const nodes = sqliteTable('nodes', {
