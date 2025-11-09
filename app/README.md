@@ -1,94 +1,86 @@
-# Nuxt Minimal Starter
+# TrailSense - Nuxt Web App
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This folder contains the Nuxt frontend and the small backend API (Nitro server) used by the web app. It's intentionally small, the frontend talks to a set of server routes included under `server/api`.
+
+## Prerequisites
+
+- Node.js (16+ recommended)
+- We recommend using `npm`, but `yarn` or `pnpm` should also work.
 
 ## Setup
 
-Make sure to install dependencies:
+Install dependencies:
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+Set up the database (Cloudflare D1):
 
 ```bash
-# npm
+# Apply migrations
+npm run apply-migrations:dev
+
+# Load demo data (optional)
+npm run seed:generate
+npm run apply-seeds:dev
+```
+
+## Development server
+
+Start the development server (default: http://localhost:3000):
+
+```bash
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
 ## Production
 
-Build the application for production:
+Build for production and preview locally:
 
 ```bash
-# npm
+# build
 npm run build
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
+# preview
 npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Backend routes (short list)
 
-## Demo data generation
+The project exposes a small API under `server/api`. Key routes:
 
-Use the bundled generator to create realistic demo data before applying the SQL seed:
+- `GET /api/nodes`
 
-# Always generates one node per curated trail.
-npm run seed:generate -- --days=30 --global-traffic=1.1
-npm run apply-seeds:dev
-```
+  - Returns a list of nodes (trail sensors) with today's estimated activations.
 
-Available flags:
+- `GET /api/nodes/:id/activities?period=&date=`
 
-- `--days` — number of full days to backfill in 5-minute slots (default `30`).
-- `--global-traffic` — multiplies overall visitor intensity.
-- `--busy-factor` / `--calm-factor` — tweak how much busier or calmer the most/least visited nodes become.
-- `--slot-minutes`, `--max-visitors`, `--seed`, `--output` — advanced controls for cadence, caps, deterministic output, and destination file.
-- `--activities-file` — optional TSV list (defaults to `db/seeds/data.txt`) converted into explicit `activities` inserts.
+  - Returns activity buckets for a node.
+  - Query params:
+    - `period` — `day` (default), `week`, or `month`
+    - `date` — ISO date (defaults to today)
 
-The generated file replaces `db/seeds/demo.sql`; pass any of the flags above to tailor scenarios, then execute the regular `apply-seeds` command to load the data into your local D1 instance.
+- `POST /api/nodes/:id/activities`
+
+  - Insert a new activity record for a node (used by hardware devices to upload BLE/WiFi counts, temperature, etc.).
+
+- `GET /api/trails?bounds=lat1,lon1,lat2,lon2`
+
+  - Returns trails whose start points are within the provided bounding box. `pathData` is returned as a polyline.
+
+- `POST /api/import`
+
+  - Triggers an internal import worker (used for project data tasks).
+
+These routes are implemented in `server/api/*`, open those files for exact parameters and response shapes.
+
+## Notes
+
+- The frontend is a Nuxt app and the backend API runs with Nitro inside the same project. This makes local development simple, run the dev server and both frontend and API routes are available.
+- Keep the documentation short and check the `server/api` files for details if you need exact request/response formats.
+
+## See also
+
+- Project root README: `../README.md`
+- Hardware docs: `../hardware/esp32/README.md`
