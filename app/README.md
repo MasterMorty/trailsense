@@ -4,7 +4,7 @@ This folder contains the Nuxt frontend and the small backend API (Nitro server) 
 
 ## Prerequisites
 
-- Node.js (16+ recommended)
+- Node.js LTS (v18+)
 - We recommend using `npm`, but `yarn` or `pnpm` should also work.
 
 ## Setup
@@ -25,6 +25,17 @@ npm run apply-migrations:dev
 npm run seed:generate
 npm run apply-seeds:dev
 ```
+
+## D1 database workflow
+
+These commands wrap the most common Cloudflare D1 tasks (binding name `DB`, configured in `wrangler.toml`):
+
+- `npm run generate-migrations` – run Drizzle Kit to emit SQL into `db/migrations` after schema changes.
+- `npm run apply-migrations:dev` / `npm run apply-migrations:prod` – apply migrations to your local D1 instance or the remote database respectively via Wrangler.
+- `npm run seed:generate` – regenerate `db/seeds/demo.sql` (reads optional TSV from `db/seeds/data.txt`).
+- `npm run apply-seeds:dev` / `npm run apply-seeds:prod` – execute the generated seed file against the local or remote database.
+
+If you use a different Pages project or D1 database name, update the binding in `wrangler.toml` before running the commands.
 
 ## Development server
 
@@ -79,6 +90,12 @@ These routes are implemented in `server/api/*`, open those files for exact param
 
 - The frontend is a Nuxt app and the backend API runs with Nitro inside the same project. This makes local development simple, run the dev server and both frontend and API routes are available.
 - Keep the documentation short and check the `server/api` files for details if you need exact request/response formats.
+
+## Cloudflare Pages + D1
+
+- The app is deployed as a Cloudflare Pages project; Nitro builds run inside the Pages Functions runtime.
+- `wrangler.toml` binds the D1 database as `DB`, which is the same binding the app expects in production and during local development.
+- When configuring Pages, add the D1 binding and any required environment variables, then use `npm run build` for the deployment step; the generated `db/seeds/demo.sql` plus the D1 commands above handle populating data in each environment.
 
 ## See also
 
