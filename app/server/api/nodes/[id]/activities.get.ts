@@ -60,8 +60,10 @@ export default defineEventHandler(async (event) => {
     const aggregates = await db
         .select({
             bucket: bucketExpr,
-            sumValue: sql<number>`SUM(${BLE_WEIGHT} * COALESCE(${activities.ble}, 0) + ${WIFI_WEIGHT} * COALESCE(${activities.wifi}, 0))` ,
-            samples: sql<number>`COUNT(*)`,
+            activationSum: sql<number>`SUM(${BLE_WEIGHT} * COALESCE(${activities.ble}, 0) + ${WIFI_WEIGHT} * COALESCE(${activities.wifi}, 0))` ,
+            activationSamples: sql<number>`COUNT(*)`,
+            temperatureAvg: sql<number>`AVG(${activities.temperature})`,
+            temperatureSamples: sql<number>`COUNT(${activities.temperature})`,
         })
         .from(activities)
         .where(and(
@@ -82,8 +84,19 @@ export default defineEventHandler(async (event) => {
         ratio,
     });
 
-    const totalValue = data.reduce((acc, bucket) => acc + bucket.value, 0);
-    const totalSamples = data.reduce((acc, bucket) => acc + bucket.samples, 0);
+    const totals = {
+        activations: data.reduce((acc, bucket) => acc + bucket.activations, 0),
+        samples: data.reduce((acc, bucket) => acc + bucket.samples, 0),
+        temperatureSum: aggregates.reduce((acc, row) => {
+            const samples = Number(row.temperatureSamples ?? 0);
+            const avg = row.temperatureAvg;
+            if (samples > 0 && typeof avg === 'number') {
+                return acc + avg * samples;
+            }
+            return acc;
+        }, 0),
+        temperatureSamples: aggregates.reduce((acc, row) => acc + Number(row.temperatureSamples ?? 0), 0),
+    };
 
     const response = {
         nodeId,
@@ -92,8 +105,12 @@ export default defineEventHandler(async (event) => {
         rangeStart: rangeStart.toISOString(),
         rangeEnd: rangeEnd.toISOString(),
         totals: {
-            value: totalValue,
-            samples: totalSamples,
+            activations: totals.activations,
+            samples: totals.samples,
+            temperature: totals.temperatureSamples > 0
+                ? roundToSingleDecimal(totals.temperatureSum / totals.temperatureSamples)
+                : null,
+            temperatureSamples: totals.temperatureSamples,
         },
         ratio,
         data,
@@ -106,14 +123,17 @@ export default defineEventHandler(async (event) => {
 type SummaryBucket = {
     start: string;
     end: string;
-    value: number;
+    activations: number;
     samples: number;
+    temperature: number | null;
 };
 
 type AggregateRow = {
     bucket: number | null;
-    sumValue: number | null;
-    samples: number | null;
+    activationSum: number | null;
+    activationSamples: number | null;
+    temperatureAvg: number | null;
+    temperatureSamples: number | null;
 };
 
 
@@ -168,7 +188,12 @@ function buildSummariesFromAggregates({
     ratio: number;
 }): SummaryBucket[] {
     const rangeStartMs = rangeStart.getTime();
-    const bucketMap = new Map<number, { value: number; samples: number }>();
+    const bucketMap = new Map<number, {
+        activationSum: number;
+        samples: number;
+        temperatureAvg: number | null;
+        temperatureSamples: number;
+    }>();
 
     for (const row of aggregates) {
         const numericBucket = typeof row.bucket === 'number' ? row.bucket : Number(row.bucket);
@@ -181,8 +206,10 @@ function buildSummariesFromAggregates({
             continue;
         }
         bucketMap.set(bucketIndex, {
-            value: Number(row.sumValue ?? 0),
-            samples: Number(row.samples ?? 0),
+            activationSum: Number(row.activationSum ?? 0),
+            samples: Number(row.activationSamples ?? 0),
+            temperatureAvg: row.temperatureAvg ?? null,
+            temperatureSamples: Number(row.temperatureSamples ?? 0),
         });
     }
 
@@ -190,14 +217,18 @@ function buildSummariesFromAggregates({
         const bucketStart = new Date(rangeStartMs + index * bucketDurationMs);
         const bucketEnd = new Date(bucketStart.getTime() + bucketDurationMs);
         const bucketData = bucketMap.get(index);
-        const adjustedValue = (bucketData?.value ?? 0) / ratio;
-        const intValue = Math.trunc(adjustedValue);
+        const activationAdjusted = (bucketData?.activationSum ?? 0) / ratio;
+        const activations = Math.trunc(activationAdjusted);
+        const temperature = bucketData && bucketData.temperatureSamples > 0 && typeof bucketData.temperatureAvg === 'number'
+            ? roundToSingleDecimal(bucketData.temperatureAvg)
+            : null;
 
         return {
             start: bucketStart.toISOString(),
             end: bucketEnd.toISOString(),
-            value: intValue,
+            activations,
             samples: bucketData?.samples ?? 0,
+            temperature,
         };
     });
 }
@@ -207,4 +238,8 @@ function normalizeRatio(rawRatio: number | null | undefined): number {
         return 1;
     }
     return rawRatio;
+}
+
+function roundToSingleDecimal(value: number): number {
+    return Math.round(value * 10) / 10;
 }
