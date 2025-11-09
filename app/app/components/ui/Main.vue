@@ -29,7 +29,7 @@ provide("toggleSidebar", toggleSidebar);
   >
     <Nav />
     <div
-      class="absolute top-0 right-0 bottom-0 sidebar-pos overflow-auto z-30 transition-[left] duration-300 rounded-lg border border-black/30 bg-white"
+      class="absolute top-0 right-0 bottom-0 sidebar-pos overflow-auto z-30 transition-[left] duration-300 rounded-lg border border-black/20 bg-white"
     >
       <slot />
     </div>

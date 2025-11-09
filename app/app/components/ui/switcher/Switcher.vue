@@ -95,9 +95,9 @@ const getInitialSlideOffset = (slideIndex) => {
 </script>
 
 <template>
-  <div class="relative w-full h-full overflow-hidden">
+  <div class="relative w-full h-full">
     <!-- Slides Container -->
-    <div class="relative w-full h-full overflow-hidden">
+    <div class="relative w-full h-full">
       <template v-for="(_, slideIndex) in $slots" :key="`slide-${slideIndex}`">
         <motion.div
           v-if="$slots[slideIndex]"
