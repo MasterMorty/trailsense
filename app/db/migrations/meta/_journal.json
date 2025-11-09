@@ -22,6 +22,13 @@
       "when": 1762677336528,
       "tag": "0002_moaning_patriot",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1762678232141,
+      "tag": "0003_greedy_paladin",
+      "breakpoints": true
     }
   ]
 }

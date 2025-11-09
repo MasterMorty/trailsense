@@ -4,7 +4,7 @@ import {sql} from "drizzle-orm";
 export const trails = sqliteTable('trails', {
   id: integer('id').primaryKey(),
   name: text('name').notNull(),
-  pathData: text('path_data'),
+  pathData: blob('path_data'),
   latitudeStart: real('latitude_start'),
   longitudeStart: real('longitude_start')
 })
