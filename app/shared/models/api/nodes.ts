@@ -5,6 +5,7 @@ import type { Period } from '#shared/models/period'
 
 export interface NodeWithActivationsToday extends Node {
   activationsToday: number
+  trailName: string;
 }
 
 export type NodesListResponse = NodeWithActivationsToday[]
