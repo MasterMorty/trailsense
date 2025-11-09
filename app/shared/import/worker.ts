@@ -14,7 +14,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const {trails} = schema;
 
 const JSON_FILE_PATH = path.join(__dirname, '..', '..', '..', 'data', 'tours.json');
-const BATCH_SIZE = 10;
+const BATCH_SIZE = 1;
 
 export const workWorkWork = async (db: DrizzleD1Database) => {
   let batch = [];

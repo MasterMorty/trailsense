@@ -20,8 +20,8 @@ async function fetchSegments() {
         }
       })
 
-
-      console.log(segments)
+      const res = segments[0].pathData.toString("base64");
+      console.log(res)
       mapRef.value.updateSegments(segments);
     }
   }

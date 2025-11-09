@@ -15,6 +15,13 @@
       "when": 1762674644308,
       "tag": "0001_burly_quasar",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1762677336528,
+      "tag": "0002_moaning_patriot",
+      "breakpoints": true
     }
   ]
 }
