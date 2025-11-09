@@ -112,7 +112,7 @@ function updateSegments(segments: any[]) {
     const geoJsonCoords = decodedCoords.map(coord => [coord[1], coord[0]]);
 
     // @ts-ignore
-    const visible = deterministicRandom(segment.id) > 0.65;
+    const visible = deterministicRandom(segment.id) > 0.22;
 
     return {
       type: 'Feature',
@@ -123,7 +123,7 @@ function updateSegments(segments: any[]) {
       properties: {
         id: segment.id,
         name: segment.name,
-        color: `rgba(255,0,0,${visible ? 0.2 : 0})`,
+        color: `rgba(255,0,0,${visible ? 0.6 : 0})`,
       }
     };
   });
